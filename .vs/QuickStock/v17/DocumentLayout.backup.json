@@ -1,0 +1,201 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Projects\\QuickStock\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|c:\\projects\\quickstock\\quickstock\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|solutionrelative:quickstock\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|c:\\projects\\quickstock\\quickstock\\infrastructure\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|solutionrelative:quickstock\\infrastructure\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|c:\\projects\\quickstock\\quickstock\\migrations\\20260208131421_firstcreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|solutionrelative:quickstock\\migrations\\20260208131421_firstcreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|c:\\projects\\quickstock\\quickstock\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|solutionrelative:quickstock\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|c:\\projects\\quickstock\\quickstock\\quickstock.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|solutionrelative:quickstock\\quickstock.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|c:\\projects\\quickstock\\quickstock\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|solutionrelative:quickstock\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|c:\\projects\\quickstock\\quickstock\\applications\\accounts\\handler\\registercommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|solutionrelative:quickstock\\applications\\accounts\\handler\\registercommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|c:\\projects\\quickstock\\quickstock\\domain\\account.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|solutionrelative:quickstock\\domain\\account.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|c:\\projects\\quickstock\\quickstock\\middlewares\\exceptionmiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|solutionrelative:quickstock\\middlewares\\exceptionmiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|c:\\projects\\quickstock\\quickstock\\infrastructure\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|solutionrelative:quickstock\\infrastructure\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|c:\\projects\\quickstock\\quickstock\\infrastructure\\dependencyinjection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|solutionrelative:quickstock\\infrastructure\\dependencyinjection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 6,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AuthService.cs",
+              "DocumentMoniker": "C:\\Projects\\QuickStock\\QuickStock\\Infrastructure\\Services\\AuthService.cs",
+              "RelativeDocumentMoniker": "QuickStock\\Infrastructure\\Services\\AuthService.cs",
+              "ToolTip": "C:\\Projects\\QuickStock\\QuickStock\\Infrastructure\\Services\\AuthService.cs",
+              "RelativeToolTip": "QuickStock\\Infrastructure\\Services\\AuthService.cs",
+              "ViewState": "AgIAACYAAAAAAAAAAAAAAD4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-08T13:22:28.304Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "RegisterCommandHandler.cs",
+              "DocumentMoniker": "C:\\Projects\\QuickStock\\QuickStock\\Applications\\Accounts\\Handler\\RegisterCommandHandler.cs",
+              "RelativeDocumentMoniker": "QuickStock\\Applications\\Accounts\\Handler\\RegisterCommandHandler.cs",
+              "ToolTip": "C:\\Projects\\QuickStock\\QuickStock\\Applications\\Accounts\\Handler\\RegisterCommandHandler.cs",
+              "RelativeToolTip": "QuickStock\\Applications\\Accounts\\Handler\\RegisterCommandHandler.cs",
+              "ViewState": "AgIAAD8AAAAAAAAAAAAAwGQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-08T13:06:00.058Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ExceptionMiddleware.cs",
+              "DocumentMoniker": "C:\\Projects\\QuickStock\\QuickStock\\Middlewares\\ExceptionMiddleware.cs",
+              "RelativeDocumentMoniker": "QuickStock\\Middlewares\\ExceptionMiddleware.cs",
+              "ToolTip": "C:\\Projects\\QuickStock\\QuickStock\\Middlewares\\ExceptionMiddleware.cs",
+              "RelativeToolTip": "QuickStock\\Middlewares\\ExceptionMiddleware.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-08T13:04:58.428Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "C:\\Projects\\QuickStock\\QuickStock\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "QuickStock\\Controllers\\AuthController.cs",
+              "ToolTip": "C:\\Projects\\QuickStock\\QuickStock\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "QuickStock\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-08T13:04:54.732Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "QuickStock.csproj",
+              "DocumentMoniker": "C:\\Projects\\QuickStock\\QuickStock\\QuickStock.csproj",
+              "RelativeDocumentMoniker": "QuickStock\\QuickStock.csproj",
+              "ToolTip": "C:\\Projects\\QuickStock\\QuickStock\\QuickStock.csproj",
+              "RelativeToolTip": "QuickStock\\QuickStock.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAABUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-02-08T13:01:49.791Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "20260208131421_FirstCreate.cs",
+              "DocumentMoniker": "C:\\Projects\\QuickStock\\QuickStock\\Migrations\\20260208131421_FirstCreate.cs",
+              "RelativeDocumentMoniker": "QuickStock\\Migrations\\20260208131421_FirstCreate.cs",
+              "ToolTip": "C:\\Projects\\QuickStock\\QuickStock\\Migrations\\20260208131421_FirstCreate.cs",
+              "RelativeToolTip": "QuickStock\\Migrations\\20260208131421_FirstCreate.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-08T13:14:21.712Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Projects\\QuickStock\\QuickStock\\Program.cs",
+              "RelativeDocumentMoniker": "QuickStock\\Program.cs",
+              "ToolTip": "C:\\Projects\\QuickStock\\QuickStock\\Program.cs",
+              "RelativeToolTip": "QuickStock\\Program.cs",
+              "ViewState": "AgIAAFYAAAAAAAAAAAAAwGQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-08T12:35:43.419Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Projects\\QuickStock\\QuickStock\\appsettings.json",
+              "RelativeDocumentMoniker": "QuickStock\\appsettings.json",
+              "ToolTip": "C:\\Projects\\QuickStock\\QuickStock\\appsettings.json",
+              "RelativeToolTip": "QuickStock\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-02-08T13:11:53.211Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "C:\\Projects\\QuickStock\\QuickStock\\Infrastructure\\Data\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "QuickStock\\Infrastructure\\Data\\AppDbContext.cs",
+              "ToolTip": "C:\\Projects\\QuickStock\\QuickStock\\Infrastructure\\Data\\AppDbContext.cs",
+              "RelativeToolTip": "QuickStock\\Infrastructure\\Data\\AppDbContext.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAxwA0AAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-08T12:24:33.248Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Account.cs",
+              "DocumentMoniker": "C:\\Projects\\QuickStock\\QuickStock\\Domain\\Account.cs",
+              "RelativeDocumentMoniker": "QuickStock\\Domain\\Account.cs",
+              "ToolTip": "C:\\Projects\\QuickStock\\QuickStock\\Domain\\Account.cs",
+              "RelativeToolTip": "QuickStock\\Domain\\Account.cs",
+              "ViewState": "AgIAABUAAAAAAAAAAAAqwC4AAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-08T12:24:28.916Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "DependencyInjection.cs",
+              "DocumentMoniker": "C:\\Projects\\QuickStock\\QuickStock\\Infrastructure\\DependencyInjection.cs",
+              "RelativeDocumentMoniker": "QuickStock\\Infrastructure\\DependencyInjection.cs",
+              "ToolTip": "C:\\Projects\\QuickStock\\QuickStock\\Infrastructure\\DependencyInjection.cs",
+              "RelativeToolTip": "QuickStock\\Infrastructure\\DependencyInjection.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-08T12:38:29.531Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
