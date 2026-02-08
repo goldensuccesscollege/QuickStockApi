@@ -11,6 +11,16 @@ namespace QuickStock.Infrastructure.Data
         }
 
         public DbSet<Account> Accounts { get; set; }
-        
+        public DbSet<Profile> Profiles { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Account>()
+                .HasOne(a => a.Profile)
+                .WithOne(p => p.Account)
+                .HasForeignKey<Profile>(p => p.AccountId);
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

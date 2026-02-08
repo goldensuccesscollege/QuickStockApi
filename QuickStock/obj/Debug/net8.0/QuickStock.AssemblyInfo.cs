@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("QuickStock")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1f7c7464a511f79c2e60dc5cb81bc9fcd7f9f9ba")]
 [assembly: System.Reflection.AssemblyProductAttribute("QuickStock")]
 [assembly: System.Reflection.AssemblyTitleAttribute("QuickStock")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -44,7 +44,8 @@ namespace QuickStock.Domain
         [MaxLength(255)]
         public string Status { get; set; } = string.Empty;
 
-        
+        public Profile? Profile { get; set; }
+
     }
-   
+
 }

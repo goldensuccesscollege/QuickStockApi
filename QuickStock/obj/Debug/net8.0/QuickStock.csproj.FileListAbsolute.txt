@@ -155,3 +155,4 @@ C:\Projects\QuickStock\QuickStock\obj\Debug\net8.0\QuickStock.genruntimeconfig.c
 C:\Projects\QuickStock\QuickStock\obj\Debug\net8.0\ref\QuickStock.dll
 C:\Projects\QuickStock\QuickStock\bin\Debug\net8.0\QuickStock.staticwebassets.runtime.json
 C:\Projects\QuickStock\QuickStock\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Projects\QuickStock\QuickStock\obj\Debug\net8.0\QuickStock.sourcelink.json
