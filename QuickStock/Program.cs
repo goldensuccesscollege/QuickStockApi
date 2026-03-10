@@ -13,22 +13,23 @@ var builder = WebApplication.CreateBuilder(args);
 // Controllers
 // -------------------------
 builder.Services.AddControllers();
+builder.Services.AddSignalR();
 
 // -------------------------
 // Database
 // -------------------------
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySql(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
-    )
+options.UseMySql(
+builder.Configuration.GetConnectionString("DefaultConnection"),
+ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
+)
 );
 
 // -------------------------
 // Email service
 // -------------------------
 builder.Services.Configure<EmailSettings>(
-    builder.Configuration.GetSection("EmailSettings")
+builder.Configuration.GetSection("EmailSettings")
 );
 builder.Services.AddScoped<EmailService>();
 
@@ -38,6 +39,12 @@ builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 // -------------------------
+// Profile Service
+// -------------------------
+builder.Services.AddScoped<QuickStock.Applications.Profile.Handler.UpdateProfileHandler>();
+builder.Services.AddScoped<QuickStock.Applications.Profile.Handler.GetProfileHandler>();
+
+// -------------------------
 // CORS
 // -------------------------
 builder.Services.AddCors(options =>
@@ -45,9 +52,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend", policy =>
     {
         policy
-            .WithOrigins("https://localhost:7058") // your frontend URL
-            .AllowAnyHeader()
-            .AllowAnyMethod();
+        .WithOrigins("https://localhost:7058", "http://localhost:5020", "http://127.0.0.1:5020")
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials(); // Required for SignalR
     });
 });
 
@@ -78,8 +86,8 @@ builder.Services.AddAuthentication(options =>
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
         ValidAudience = builder.Configuration["Jwt:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)
-        )
+    Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)
+    )
     };
 });
 
@@ -105,6 +113,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// Serve files from wwwroot (for profile images)
+app.UseStaticFiles();
+
 app.UseRouting();
 
 app.UseCors("AllowFrontend");
@@ -113,5 +124,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<QuickStock.Controllers.ChatHub>("/chatHub");
 
 app.Run();

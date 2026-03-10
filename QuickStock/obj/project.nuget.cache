@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ipcTp0TKIaI=",
+  "dgSpecHash": "UsLgjfMic9Q=",
   "success": true,
-  "projectFilePath": "C:\\Projects\\QuickStock\\QuickStock\\QuickStock.csproj",
+  "projectFilePath": "C:\\Projects\\QuickStockApi\\QuickStock\\QuickStock.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Unknown\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\Unknown\\.nuget\\packages\\bouncycastle.cryptography\\2.5.1\\bouncycastle.cryptography.2.5.1.nupkg.sha512",

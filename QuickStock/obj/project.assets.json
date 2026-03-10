@@ -4150,11 +4150,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Projects\\QuickStock\\QuickStock\\QuickStock.csproj",
+      "projectUniqueName": "C:\\Projects\\QuickStockApi\\QuickStock\\QuickStock.csproj",
       "projectName": "QuickStock",
-      "projectPath": "C:\\Projects\\QuickStock\\QuickStock\\QuickStock.csproj",
+      "projectPath": "C:\\Projects\\QuickStockApi\\QuickStock\\QuickStock.csproj",
       "packagesPath": "C:\\Users\\Unknown\\.nuget\\packages\\",
-      "outputPath": "C:\\Projects\\QuickStock\\QuickStock\\obj\\",
+      "outputPath": "C:\\Projects\\QuickStockApi\\QuickStock\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
