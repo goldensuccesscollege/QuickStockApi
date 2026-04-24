@@ -3,6 +3,34 @@
   "WorkspaceRootPath": "C:\\Projects\\QuickStockApi\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|c:\\projects\\quickstockapi\\quickstock\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|solutionrelative:quickstock\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|c:\\projects\\quickstockapi\\quickstock\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|solutionrelative:quickstock\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|c:\\projects\\quickstockapi\\quickstock\\quickstock.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|solutionrelative:quickstock\\quickstock.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|c:\\projects\\quickstockapi\\quickstock\\applications\\accounts\\handler\\checkresettokenhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|solutionrelative:quickstock\\applications\\accounts\\handler\\checkresettokenhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|c:\\projects\\quickstockapi\\quickstock\\wwwroot\\upload\\picture\\9c9dc77d-a715-4bcd-9b49-30ce366c74d8.jpg||{177559E0-D141-11D0-92DF-00A0C9138C45}",
+      "RelativeMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|solutionrelative:quickstock\\wwwroot\\upload\\picture\\9c9dc77d-a715-4bcd-9b49-30ce366c74d8.jpg||{177559E0-D141-11D0-92DF-00A0C9138C45}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|c:\\projects\\quickstockapi\\quickstock\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|solutionrelative:quickstock\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|c:\\projects\\quickstockapi\\quickstock\\quickstock.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
+      "RelativeMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|solutionrelative:quickstock\\quickstock.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|c:\\projects\\quickstockapi\\quickstock\\applications\\accounts\\handler\\registercommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|solutionrelative:quickstock\\applications\\accounts\\handler\\registercommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -17,10 +45,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|c:\\projects\\quickstockapi\\quickstock\\applications\\accounts\\handler\\resetpasswordhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|solutionrelative:quickstock\\applications\\accounts\\handler\\resetpasswordhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|c:\\projects\\quickstockapi\\quickstock\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|solutionrelative:quickstock\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|c:\\projects\\quickstockapi\\quickstock\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
@@ -49,10 +73,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|c:\\projects\\quickstockapi\\quickstock\\middlewares\\exceptionmiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|solutionrelative:quickstock\\middlewares\\exceptionmiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|c:\\projects\\quickstockapi\\quickstock\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|solutionrelative:quickstock\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|c:\\projects\\quickstockapi\\quickstock\\infrastructure\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -87,20 +107,12 @@
       "RelativeMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|solutionrelative:quickstock\\domain\\account.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|c:\\projects\\quickstockapi\\quickstock\\applications\\accounts\\handler\\checkresettokenhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|solutionrelative:quickstock\\applications\\accounts\\handler\\checkresettokenhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|c:\\projects\\quickstockapi\\quickstock\\migrations\\20260309035918_initialcreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|solutionrelative:quickstock\\migrations\\20260309035918_initialcreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|c:\\projects\\quickstockapi\\quickstock\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|solutionrelative:quickstock\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|c:\\projects\\quickstockapi\\quickstock\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|solutionrelative:quickstock\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|c:\\projects\\quickstockapi\\quickstock\\common\\exceptions\\unauthorizedexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -119,10 +131,6 @@
       "RelativeMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|solutionrelative:quickstock\\applications\\accounts\\handler\\forgotpasshandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|c:\\projects\\quickstockapi\\quickstock\\quickstock.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|solutionrelative:quickstock\\quickstock.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|c:\\projects\\quickstockapi\\quickstock\\applications\\accounts\\dto\u0027s\\accountdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5EE91158-8E4E-4887-8DFC-A25B965256BD}|QuickStock\\QuickStock.csproj|solutionrelative:quickstock\\applications\\accounts\\dto\u0027s\\accountdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -138,60 +146,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "AuthService.cs",
-              "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Infrastructure\\Services\\AuthService.cs",
-              "RelativeDocumentMoniker": "QuickStock\\Infrastructure\\Services\\AuthService.cs",
-              "ToolTip": "C:\\Projects\\QuickStockApi\\QuickStock\\Infrastructure\\Services\\AuthService.cs",
-              "RelativeToolTip": "QuickStock\\Infrastructure\\Services\\AuthService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAATAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-09T04:06:27.032Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "PasswordHelper.cs",
-              "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Infrastructure\\Security\\PasswordHelper.cs",
-              "RelativeDocumentMoniker": "QuickStock\\Infrastructure\\Security\\PasswordHelper.cs",
-              "ToolTip": "C:\\Projects\\QuickStockApi\\QuickStock\\Infrastructure\\Security\\PasswordHelper.cs",
-              "RelativeToolTip": "QuickStock\\Infrastructure\\Security\\PasswordHelper.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAkAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-09T03:55:01.795Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "RegisterCommandHandler.cs",
-              "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Applications\\Accounts\\Handler\\RegisterCommandHandler.cs",
-              "RelativeDocumentMoniker": "QuickStock\\Applications\\Accounts\\Handler\\RegisterCommandHandler.cs",
-              "ToolTip": "C:\\Projects\\QuickStockApi\\QuickStock\\Applications\\Accounts\\Handler\\RegisterCommandHandler.cs",
-              "RelativeToolTip": "QuickStock\\Applications\\Accounts\\Handler\\RegisterCommandHandler.cs",
-              "ViewState": "AgIAAFYAAAAAAAAAAAAowHAAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-09T03:54:06.611Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "ResetPasswordHandler.cs",
-              "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Applications\\Accounts\\Handler\\ResetPasswordHandler.cs",
-              "RelativeDocumentMoniker": "QuickStock\\Applications\\Accounts\\Handler\\ResetPasswordHandler.cs",
-              "ToolTip": "C:\\Projects\\QuickStockApi\\QuickStock\\Applications\\Accounts\\Handler\\ResetPasswordHandler.cs",
-              "RelativeToolTip": "QuickStock\\Applications\\Accounts\\Handler\\ResetPasswordHandler.cs",
-              "ViewState": "AgIAABkAAAAAAAAAAAAQwBoAAAAgAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-09T03:55:31.779Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 9,
               "Title": "VerifyAccountCommandHandler.cs",
               "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Applications\\Accounts\\Handler\\VerifyAccountCommandHandler.cs",
               "RelativeDocumentMoniker": "QuickStock\\Applications\\Accounts\\Handler\\VerifyAccountCommandHandler.cs",
@@ -203,7 +162,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 8,
               "Title": "LoginCommandHandler.cs",
               "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Applications\\Accounts\\Handler\\LoginCommandHandler.cs",
               "RelativeDocumentMoniker": "QuickStock\\Applications\\Accounts\\Handler\\LoginCommandHandler.cs",
@@ -215,7 +174,143 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CheckResetTokenHandler.cs",
+              "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Applications\\Accounts\\Handler\\CheckResetTokenHandler.cs",
+              "RelativeDocumentMoniker": "QuickStock\\Applications\\Accounts\\Handler\\CheckResetTokenHandler.cs",
+              "ToolTip": "C:\\Projects\\QuickStockApi\\QuickStock\\Applications\\Accounts\\Handler\\CheckResetTokenHandler.cs",
+              "RelativeToolTip": "QuickStock\\Applications\\Accounts\\Handler\\CheckResetTokenHandler.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABMAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-09T03:53:11.697Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "QuickStock.csproj",
+              "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\QuickStock.csproj",
+              "RelativeDocumentMoniker": "QuickStock\\QuickStock.csproj",
+              "ToolTip": "C:\\Projects\\QuickStockApi\\QuickStock\\QuickStock.csproj",
+              "RelativeToolTip": "QuickStock\\QuickStock.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-03-09T03:51:24.208Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\appsettings.json",
+              "RelativeDocumentMoniker": "QuickStock\\appsettings.json",
+              "ToolTip": "C:\\Projects\\QuickStockApi\\QuickStock\\appsettings.json",
+              "RelativeToolTip": "QuickStock\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-03-09T08:35:07.227Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Program.cs",
+              "RelativeDocumentMoniker": "QuickStock\\Program.cs",
+              "ToolTip": "C:\\Projects\\QuickStockApi\\QuickStock\\Program.cs",
+              "RelativeToolTip": "QuickStock\\Program.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAAAAIUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-09T03:46:23.228Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ResetPasswordHandler.cs",
+              "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Applications\\Accounts\\Handler\\ResetPasswordHandler.cs",
+              "RelativeDocumentMoniker": "QuickStock\\Applications\\Accounts\\Handler\\ResetPasswordHandler.cs",
+              "ToolTip": "C:\\Projects\\QuickStockApi\\QuickStock\\Applications\\Accounts\\Handler\\ResetPasswordHandler.cs",
+              "RelativeToolTip": "QuickStock\\Applications\\Accounts\\Handler\\ResetPasswordHandler.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAAQwBoAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-09T03:55:31.779Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "9c9dc77d-a715-4bcd-9b49-30ce366c74d8.jpg - Bitmap [728x466, 24 bit, JPG]",
+              "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\wwwroot\\Upload\\Picture\\9c9dc77d-a715-4bcd-9b49-30ce366c74d8.jpg",
+              "RelativeDocumentMoniker": "QuickStock\\wwwroot\\Upload\\Picture\\9c9dc77d-a715-4bcd-9b49-30ce366c74d8.jpg",
+              "ToolTip": "C:\\Projects\\QuickStockApi\\QuickStock\\wwwroot\\Upload\\Picture\\9c9dc77d-a715-4bcd-9b49-30ce366c74d8.jpg - Bitmap [728x466, 24 bit, JPG]",
+              "RelativeToolTip": "QuickStock\\wwwroot\\Upload\\Picture\\9c9dc77d-a715-4bcd-9b49-30ce366c74d8.jpg - Bitmap [728x466, 24 bit, JPG]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
+              "WhenOpened": "2026-03-10T06:12:48.04Z",
+              "EditorCaption": " - Bitmap [728x466, 24 bit, JPG]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "RegisterCommandHandler.cs",
+              "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Applications\\Accounts\\Handler\\RegisterCommandHandler.cs",
+              "RelativeDocumentMoniker": "QuickStock\\Applications\\Accounts\\Handler\\RegisterCommandHandler.cs",
+              "ToolTip": "C:\\Projects\\QuickStockApi\\QuickStock\\Applications\\Accounts\\Handler\\RegisterCommandHandler.cs",
+              "RelativeToolTip": "QuickStock\\Applications\\Accounts\\Handler\\RegisterCommandHandler.cs",
+              "ViewState": "AgIAAFYAAAAAAAAAAAAowHAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-09T03:54:06.611Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 6,
+              "Title": "QuickStock",
+              "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\QuickStock.csproj",
+              "RelativeDocumentMoniker": "QuickStock\\QuickStock.csproj",
+              "ToolTip": "C:\\Projects\\QuickStockApi\\QuickStock\\QuickStock.csproj",
+              "RelativeToolTip": "QuickStock\\QuickStock.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-03-10T06:12:13.296Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "QuickStock\\Properties\\launchSettings.json",
+              "ToolTip": "C:\\Projects\\QuickStockApi\\QuickStock\\Properties\\launchSettings.json",
+              "RelativeToolTip": "QuickStock\\Properties\\launchSettings.json",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAACAAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-03-09T04:02:34.808Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "PasswordHelper.cs",
+              "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Infrastructure\\Security\\PasswordHelper.cs",
+              "RelativeDocumentMoniker": "QuickStock\\Infrastructure\\Security\\PasswordHelper.cs",
+              "ToolTip": "C:\\Projects\\QuickStockApi\\QuickStock\\Infrastructure\\Security\\PasswordHelper.cs",
+              "RelativeToolTip": "QuickStock\\Infrastructure\\Security\\PasswordHelper.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-09T03:55:01.795Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "AuthService.cs",
+              "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Infrastructure\\Services\\AuthService.cs",
+              "RelativeDocumentMoniker": "QuickStock\\Infrastructure\\Services\\AuthService.cs",
+              "ToolTip": "C:\\Projects\\QuickStockApi\\QuickStock\\Infrastructure\\Services\\AuthService.cs",
+              "RelativeToolTip": "QuickStock\\Infrastructure\\Services\\AuthService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-09T04:06:27.032Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
               "Title": "AppDbContextFactory.cs",
               "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Infrastructure\\Data\\AppDbContextFactory.cs",
               "RelativeDocumentMoniker": "QuickStock\\Infrastructure\\Data\\AppDbContextFactory.cs",
@@ -227,7 +322,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 11,
               "Title": "appsettings.Development.json",
               "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\appsettings.Development.json",
               "RelativeDocumentMoniker": "QuickStock\\appsettings.Development.json",
@@ -239,19 +334,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\appsettings.json",
-              "RelativeDocumentMoniker": "QuickStock\\appsettings.json",
-              "ToolTip": "C:\\Projects\\QuickStockApi\\QuickStock\\appsettings.json",
-              "RelativeToolTip": "QuickStock\\appsettings.json",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAABoAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-03-09T08:35:07.227Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 17,
               "Title": "ExceptionMiddleware.cs",
               "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Middlewares\\ExceptionMiddleware.cs",
               "RelativeDocumentMoniker": "QuickStock\\Middlewares\\ExceptionMiddleware.cs",
@@ -263,7 +346,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 15,
               "Title": "IAuthService.cs",
               "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Infrastructure\\Services\\IAuthService.cs",
               "RelativeDocumentMoniker": "QuickStock\\Infrastructure\\Services\\IAuthService.cs",
@@ -275,7 +358,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 19,
               "Title": "DependencyInjection.cs",
               "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Infrastructure\\DependencyInjection.cs",
               "RelativeDocumentMoniker": "QuickStock\\Infrastructure\\DependencyInjection.cs",
@@ -287,7 +370,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 16,
               "Title": "EmailService.cs",
               "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Infrastructure\\Services\\EmailService.cs",
               "RelativeDocumentMoniker": "QuickStock\\Infrastructure\\Services\\EmailService.cs",
@@ -299,7 +382,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 20,
               "Title": "EmailSettings.cs",
               "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Infrastructure\\Config\\EmailSettings.cs",
               "RelativeDocumentMoniker": "QuickStock\\Infrastructure\\Config\\EmailSettings.cs",
@@ -311,31 +394,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Program.cs",
-              "RelativeDocumentMoniker": "QuickStock\\Program.cs",
-              "ToolTip": "C:\\Projects\\QuickStockApi\\QuickStock\\Program.cs",
-              "RelativeToolTip": "QuickStock\\Program.cs",
-              "ViewState": "AgIAAF0AAAAAAAAAAAAAAHgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-09T03:46:23.228Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 21,
-              "Title": "CheckResetTokenHandler.cs",
-              "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Applications\\Accounts\\Handler\\CheckResetTokenHandler.cs",
-              "RelativeDocumentMoniker": "QuickStock\\Applications\\Accounts\\Handler\\CheckResetTokenHandler.cs",
-              "ToolTip": "C:\\Projects\\QuickStockApi\\QuickStock\\Applications\\Accounts\\Handler\\CheckResetTokenHandler.cs",
-              "RelativeToolTip": "QuickStock\\Applications\\Accounts\\Handler\\CheckResetTokenHandler.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAABMAAAAUAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-09T03:53:11.697Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 18,
               "Title": "AppDbContext.cs",
               "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Infrastructure\\Data\\AppDbContext.cs",
               "RelativeDocumentMoniker": "QuickStock\\Infrastructure\\Data\\AppDbContext.cs",
@@ -347,7 +406,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 22,
               "Title": "UpdateProfileDto.cs",
               "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Applications\\Profile\\DTO\u0027s\\UpdateProfileDto.cs",
               "RelativeDocumentMoniker": "QuickStock\\Applications\\Profile\\DTO\u0027s\\UpdateProfileDto.cs",
@@ -359,7 +418,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 21,
               "Title": "UpdateProfileHandler.cs",
               "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Applications\\Profile\\Handler\\UpdateProfileHandler.cs",
               "RelativeDocumentMoniker": "QuickStock\\Applications\\Profile\\Handler\\UpdateProfileHandler.cs",
@@ -371,7 +430,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 33,
               "Title": "Profile.cs",
               "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Controllers\\Profile.cs",
               "RelativeDocumentMoniker": "QuickStock\\Controllers\\Profile.cs",
@@ -383,7 +442,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 25,
               "Title": "Account.cs",
               "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Domain\\Account.cs",
               "RelativeDocumentMoniker": "QuickStock\\Domain\\Account.cs",
@@ -395,7 +454,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 23,
               "Title": "Profile.cs",
               "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Domain\\Profile.cs",
               "RelativeDocumentMoniker": "QuickStock\\Domain\\Profile.cs",
@@ -407,7 +466,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 24,
               "Title": "AppDbContextModelSnapshot.cs",
               "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Migrations\\AppDbContextModelSnapshot.cs",
               "RelativeDocumentMoniker": "QuickStock\\Migrations\\AppDbContextModelSnapshot.cs",
@@ -419,19 +478,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
-              "Title": "launchSettings.json",
-              "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Properties\\launchSettings.json",
-              "RelativeDocumentMoniker": "QuickStock\\Properties\\launchSettings.json",
-              "ToolTip": "C:\\Projects\\QuickStockApi\\QuickStock\\Properties\\launchSettings.json",
-              "RelativeToolTip": "QuickStock\\Properties\\launchSettings.json",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-03-09T04:02:34.808Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 28,
               "Title": "UnauthorizedException.cs",
               "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Common\\Exceptions\\UnauthorizedException.cs",
               "RelativeDocumentMoniker": "QuickStock\\Common\\Exceptions\\UnauthorizedException.cs",
@@ -443,7 +490,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 29,
               "Title": "NotFoundException.cs",
               "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Common\\Exceptions\\NotFoundException.cs",
               "RelativeDocumentMoniker": "QuickStock\\Common\\Exceptions\\NotFoundException.cs",
@@ -455,7 +502,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 30,
               "Title": "BadRequestException.cs",
               "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Common\\Exceptions\\BadRequestException.cs",
               "RelativeDocumentMoniker": "QuickStock\\Common\\Exceptions\\BadRequestException.cs",
@@ -467,7 +514,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 26,
               "Title": "20260309035918_InitialCreate.cs",
               "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Migrations\\20260309035918_InitialCreate.cs",
               "RelativeDocumentMoniker": "QuickStock\\Migrations\\20260309035918_InitialCreate.cs",
@@ -479,7 +526,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 27,
               "Title": "AuthController.cs",
               "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "QuickStock\\Controllers\\AuthController.cs",
@@ -491,7 +538,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 31,
               "Title": "ForgotPassHandler.cs",
               "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Applications\\Accounts\\Handler\\ForgotPassHandler.cs",
               "RelativeDocumentMoniker": "QuickStock\\Applications\\Accounts\\Handler\\ForgotPassHandler.cs",
@@ -503,19 +550,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
-              "Title": "QuickStock.csproj",
-              "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\QuickStock.csproj",
-              "RelativeDocumentMoniker": "QuickStock\\QuickStock.csproj",
-              "ToolTip": "C:\\Projects\\QuickStockApi\\QuickStock\\QuickStock.csproj",
-              "RelativeToolTip": "QuickStock\\QuickStock.csproj",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAA8AAAA8AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-03-09T03:51:24.208Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 32,
               "Title": "AccountDto.cs",
               "DocumentMoniker": "C:\\Projects\\QuickStockApi\\QuickStock\\Applications\\Accounts\\Dto\u0027s\\AccountDto.cs",
               "RelativeDocumentMoniker": "QuickStock\\Applications\\Accounts\\Dto\u0027s\\AccountDto.cs",

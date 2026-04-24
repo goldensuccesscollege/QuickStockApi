@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace QuickStock.Domain
@@ -43,6 +43,8 @@ namespace QuickStock.Domain
 
         [MaxLength(255)]
         public string Status { get; set; } = string.Empty;
+
+        public virtual ICollection<AccountCampus> AccountCampuses { get; set; } = new List<AccountCampus>();
 
         public Profile? Profile { get; set; }
 

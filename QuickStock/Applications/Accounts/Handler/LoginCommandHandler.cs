@@ -29,6 +29,7 @@ namespace QuickStock.Applications.Accounts.Handler
             CancellationToken cancellationToken)
         {
             var user = await _db.Accounts
+                .Include(a => a.AccountCampuses)
                 .FirstOrDefaultAsync(
                     x => x.Username == request.Username,
                     cancellationToken);
@@ -61,6 +62,13 @@ namespace QuickStock.Applications.Accounts.Handler
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
+            var claimList = claims.ToList();
+            var activeCampuses = user.AccountCampuses.Where(ac => !ac.IsBlocked).ToList();
+            foreach (var ac in activeCampuses)
+            {
+                claimList.Add(new Claim("CampusId", ac.CampusId.ToString()));
+            }
+
             var key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(
                     _config["Jwt:Key"]
@@ -72,7 +80,7 @@ namespace QuickStock.Applications.Accounts.Handler
             var token = new JwtSecurityToken(
                 issuer: _config["Jwt:Issuer"],
                 audience: _config["Jwt:Audience"],
-                claims: claims,
+                claims: claimList,
                 expires: DateTime.UtcNow.AddHours(1),
                 signingCredentials: creds
             );
@@ -81,7 +89,8 @@ namespace QuickStock.Applications.Accounts.Handler
             {
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
                 Email = user.Email,
-                Role = user.Role
+                Role = user.Role,
+                CampusIds = activeCampuses.Select(ac => ac.CampusId).ToList()
             };
         }
     }

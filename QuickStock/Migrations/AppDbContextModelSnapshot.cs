@@ -86,6 +86,124 @@ namespace QuickStock.Migrations
                     b.ToTable("Accounts");
                 });
 
+            modelBuilder.Entity("QuickStock.Domain.AccountCampus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CampusId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsBlocked")
+                        .HasColumnType("tinyint(1)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("CampusId");
+
+                    b.ToTable("AccountCampuses");
+                });
+
+            modelBuilder.Entity("QuickStock.Domain.AuditLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<int>("CampusId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Details")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("varchar(2000)");
+
+                    b.Property<int>("EntityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EntityName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("EntityType")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("UserId")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Username")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AuditLogs");
+                });
+
+            modelBuilder.Entity("QuickStock.Domain.Campus", b =>
+                {
+                    b.Property<int>("CampusId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("CampusId"));
+
+                    b.Property<string>("Address")
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("varchar(1000)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("CampusId");
+
+                    b.ToTable("Campuses");
+
+                    b.HasData(
+                        new
+                        {
+                            CampusId = 1,
+                            Address = "Cebu City",
+                            Description = "Main Campus",
+                            Name = "Cebu Campus"
+                        },
+                        new
+                        {
+                            CampusId = 2,
+                            Address = "Metro Manila",
+                            Description = "Luzon Branch",
+                            Name = "Manila Campus"
+                        });
+                });
+
             modelBuilder.Entity("QuickStock.Domain.ChatGroup", b =>
                 {
                     b.Property<int>("Id")
@@ -171,6 +289,72 @@ namespace QuickStock.Migrations
                     b.HasIndex("SenderAccountId");
 
                     b.ToTable("ChatMessages");
+                });
+
+            modelBuilder.Entity("QuickStock.Domain.ItAsset", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Brand")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<int>("CampusId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Qrcode")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<int?>("RoomId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SerialNumber")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CampusId");
+
+                    b.HasIndex("RoomId");
+
+                    b.ToTable("Itassets");
                 });
 
             modelBuilder.Entity("QuickStock.Domain.PostComment", b =>
@@ -327,6 +511,89 @@ namespace QuickStock.Migrations
                     b.ToTable("ProfilePosts");
                 });
 
+            modelBuilder.Entity("QuickStock.Domain.Room", b =>
+                {
+                    b.Property<int>("RoomId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("RoomId"));
+
+                    b.Property<int>("CampusId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDisabled")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("RoomDescription")
+                        .HasMaxLength(1000)
+                        .HasColumnType("varchar(1000)");
+
+                    b.Property<string>("RoomFloor")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("RoomName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("RoomId");
+
+                    b.HasIndex("CampusId");
+
+                    b.ToTable("Rooms");
+
+                    b.HasData(
+                        new
+                        {
+                            RoomId = 1,
+                            CampusId = 1,
+                            IsDisabled = false,
+                            RoomDescription = "General IT Office",
+                            RoomFloor = "4th Floor",
+                            RoomName = "Room 403"
+                        },
+                        new
+                        {
+                            RoomId = 2,
+                            CampusId = 1,
+                            IsDisabled = false,
+                            RoomDescription = "Hardware Testing and Maintenance",
+                            RoomFloor = "2nd Floor",
+                            RoomName = "IT Lab"
+                        },
+                        new
+                        {
+                            RoomId = 3,
+                            CampusId = 1,
+                            IsDisabled = false,
+                            RoomDescription = "Critical Infrastructure",
+                            RoomFloor = "Basement",
+                            RoomName = "Server Room 1"
+                        });
+                });
+
+            modelBuilder.Entity("QuickStock.Domain.AccountCampus", b =>
+                {
+                    b.HasOne("QuickStock.Domain.Account", "Account")
+                        .WithMany("AccountCampuses")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("QuickStock.Domain.Campus", "Campus")
+                        .WithMany()
+                        .HasForeignKey("CampusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Campus");
+                });
+
             modelBuilder.Entity("QuickStock.Domain.ChatGroup", b =>
                 {
                     b.HasOne("QuickStock.Domain.Account", "CreatedBy")
@@ -378,6 +645,23 @@ namespace QuickStock.Migrations
                     b.Navigation("Receiver");
 
                     b.Navigation("Sender");
+                });
+
+            modelBuilder.Entity("QuickStock.Domain.ItAsset", b =>
+                {
+                    b.HasOne("QuickStock.Domain.Campus", "Campus")
+                        .WithMany()
+                        .HasForeignKey("CampusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("QuickStock.Domain.Room", "Room")
+                        .WithMany()
+                        .HasForeignKey("RoomId");
+
+                    b.Navigation("Campus");
+
+                    b.Navigation("Room");
                 });
 
             modelBuilder.Entity("QuickStock.Domain.PostComment", b =>
@@ -451,8 +735,21 @@ namespace QuickStock.Migrations
                     b.Navigation("Author");
                 });
 
+            modelBuilder.Entity("QuickStock.Domain.Room", b =>
+                {
+                    b.HasOne("QuickStock.Domain.Campus", "Campus")
+                        .WithMany()
+                        .HasForeignKey("CampusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Campus");
+                });
+
             modelBuilder.Entity("QuickStock.Domain.Account", b =>
                 {
+                    b.Navigation("AccountCampuses");
+
                     b.Navigation("Profile");
                 });
 

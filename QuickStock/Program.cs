@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using QuickStock.Middlewares;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using QuickStock.Applications.Accounts.Handler;
@@ -100,11 +101,14 @@ builder.Services.AddSwaggerGen();
 // -------------------------
 // Build App
 // -------------------------
+
 var app = builder.Build();
 
 // -------------------------
 // Middleware Pipeline
 // -------------------------
+app.ConfigureCustomExceptionMiddleware();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

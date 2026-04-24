@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using QuickStock.Applications.Accounts.Dto_s;
 
 namespace QuickStock.Applications.Accounts.Command
@@ -11,6 +11,7 @@ namespace QuickStock.Applications.Accounts.Command
        string Title,
        string FirstName,
        string LastName,
+       string Role = "User",
        bool IsFromApi = false // 👈 just a constructor parameter
    ) : IRequest<RegisterResponse>;
 }

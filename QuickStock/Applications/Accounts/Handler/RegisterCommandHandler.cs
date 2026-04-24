@@ -50,7 +50,7 @@ namespace QuickStock.Applications.Accounts.Handler
                 PasswordHash = PasswordHelper.HashPassword(request.Password),
                 VerificationTokens = token,
                 Created = DateTime.UtcNow,
-                Role = "User",
+                Role = request.Role ?? "User",
                 Status = "Pending",
                 Profile = new QuickStock.Domain.Profile
                 {

@@ -1,4 +1,4 @@
-﻿namespace QuickStock.Applications.Accounts.Dto_s
+namespace QuickStock.Applications.Accounts.Dto_s
 {
     public class LoginRequest
     {
@@ -11,7 +11,7 @@
         public string Token { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string Role { get; set; } = string.Empty;
-
+        public System.Collections.Generic.List<int> CampusIds { get; set; } = new();
     }
 
     public class RegisterRequest
