@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using QuickStock.Domain;
+using QuickStock.Domain.ITassets;
 using QuickStock.Infrastructure.Data;
 
 namespace QuickStock.Controllers

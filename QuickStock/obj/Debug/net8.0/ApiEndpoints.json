@@ -314,6 +314,38 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "QuickStock.Controllers.ImageController",
+    "Method": "Get",
+    "RelativePath": "api/Image/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "QuickStock.Controllers.ImageController",
+    "Method": "Upload",
+    "RelativePath": "api/Image/upload",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "QuickStock.Controllers.ItassetsController",
     "Method": "GetItassets",
     "RelativePath": "api/Itassets",

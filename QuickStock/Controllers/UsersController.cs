@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using QuickStock.Domain;
+using QuickStock.Domain.ITassets;
 using QuickStock.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 
@@ -31,6 +31,8 @@ namespace QuickStock.Controllers
                     Status = a.Status ?? "Active",
                     FirstName = a.Profile != null ? a.Profile.FirstName : "",
                     LastName = a.Profile != null ? a.Profile.LastName : "",
+                    a.CanAccessITAssets,
+                    a.CanAccessApparel,
                     Campuses = a.AccountCampuses.Select(ac => new
                     {
                         ac.CampusId,
@@ -59,7 +61,9 @@ namespace QuickStock.Controllers
                 PasswordHash = QuickStock.Infrastructure.Security.PasswordHelper.HashPassword(request.Password),
                 Status = "Active",
                 Verified = DateTime.UtcNow,
-                Profile = new QuickStock.Domain.Profile
+                CanAccessITAssets = request.CanAccessITAssets,
+                CanAccessApparel = request.CanAccessApparel,
+                Profile = new QuickStock.Domain.ITassets.Profile
                 {
                     FirstName = request.FirstName,
                     LastName = request.LastName
@@ -81,6 +85,8 @@ namespace QuickStock.Controllers
             account.Email = request.Email;
             account.Role = request.Role;
             account.Username = request.Username;
+            account.CanAccessITAssets = request.CanAccessITAssets;
+            account.CanAccessApparel = request.CanAccessApparel;
             
             if (account.Profile != null)
             {

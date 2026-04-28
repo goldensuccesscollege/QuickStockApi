@@ -8,6 +8,8 @@ namespace QuickStock.Controllers
         public string Role { get; set; } = "User";
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
+        public bool CanAccessITAssets { get; set; } = true;
+        public bool CanAccessApparel { get; set; } = true;
     }
 
     public class UpdateUserRequest
@@ -17,5 +19,7 @@ namespace QuickStock.Controllers
         public string Role { get; set; } = "User";
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
+        public bool CanAccessITAssets { get; set; }
+        public bool CanAccessApparel { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using QuickStock.Domain;
+using QuickStock.Domain.ITassets;
+using QuickStock.Domain.Apparel;
 
 namespace QuickStock.Infrastructure.Data
 {
@@ -24,6 +25,9 @@ namespace QuickStock.Infrastructure.Data
         public DbSet<Campus> Campuses { get; set; }
         public DbSet<AccountCampus> AccountCampuses { get; set; }
         public DbSet<AuditLog> AuditLogs { get; set; }
+        public DbSet<StoredImage> StoredImages { get; set; }
+        public DbSet<Appareldata> ApparelList { get; set; }
+        public DbSet<ApparelItem> ApparelItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

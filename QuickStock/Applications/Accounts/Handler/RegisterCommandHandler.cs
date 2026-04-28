@@ -2,7 +2,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using QuickStock.Applications.Accounts.Command;
 using QuickStock.Applications.Accounts.Dto_s;
-using QuickStock.Domain;
+using QuickStock.Domain.ITassets;
 using QuickStock.Infrastructure.Data;
 using QuickStock.Infrastructure.Security;
 using QuickStock.Infrastructure.Services;
@@ -52,7 +52,7 @@ namespace QuickStock.Applications.Accounts.Handler
                 Created = DateTime.UtcNow,
                 Role = request.Role ?? "User",
                 Status = "Pending",
-                Profile = new QuickStock.Domain.Profile
+                Profile = new QuickStock.Domain.ITassets.Profile
                 {
                     FirstName = request.FirstName ?? string.Empty,
                     LastName = request.LastName ?? string.Empty

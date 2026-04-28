@@ -22,7 +22,107 @@ namespace QuickStock.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("QuickStock.Domain.Account", b =>
+            modelBuilder.Entity("QuickStock.Domain.Apparel.ApparelItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Apparel_Number")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<int>("AppareldataId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CampusId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppareldataId");
+
+                    b.HasIndex("CampusId");
+
+                    b.ToTable("ApparelItems");
+                });
+
+            modelBuilder.Entity("QuickStock.Domain.Apparel.Appareldata", b =>
+                {
+                    b.Property<int>("Apparel_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Apparel_ID"));
+
+                    b.Property<string>("Apparel_Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("CampusId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime>("Date_Purchased")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("Grade_Level")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<int>("Quality_In_Stock")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Remarks")
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<int>("Reorder_level")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Size")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("Supplier_Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<decimal>("Unit_Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Apparel_ID");
+
+                    b.HasIndex("CampusId");
+
+                    b.ToTable("ApparelList");
+                });
+
+            modelBuilder.Entity("QuickStock.Domain.ITassets.Account", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -31,6 +131,12 @@ namespace QuickStock.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("AcceptTerms")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("CanAccessApparel")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("CanAccessITAssets")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<DateTime>("Created")
@@ -86,7 +192,7 @@ namespace QuickStock.Migrations
                     b.ToTable("Accounts");
                 });
 
-            modelBuilder.Entity("QuickStock.Domain.AccountCampus", b =>
+            modelBuilder.Entity("QuickStock.Domain.ITassets.AccountCampus", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -112,7 +218,7 @@ namespace QuickStock.Migrations
                     b.ToTable("AccountCampuses");
                 });
 
-            modelBuilder.Entity("QuickStock.Domain.AuditLog", b =>
+            modelBuilder.Entity("QuickStock.Domain.ITassets.AuditLog", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -162,7 +268,7 @@ namespace QuickStock.Migrations
                     b.ToTable("AuditLogs");
                 });
 
-            modelBuilder.Entity("QuickStock.Domain.Campus", b =>
+            modelBuilder.Entity("QuickStock.Domain.ITassets.Campus", b =>
                 {
                     b.Property<int>("CampusId")
                         .ValueGeneratedOnAdd()
@@ -204,7 +310,7 @@ namespace QuickStock.Migrations
                         });
                 });
 
-            modelBuilder.Entity("QuickStock.Domain.ChatGroup", b =>
+            modelBuilder.Entity("QuickStock.Domain.ITassets.ChatGroup", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -230,7 +336,7 @@ namespace QuickStock.Migrations
                     b.ToTable("ChatGroups");
                 });
 
-            modelBuilder.Entity("QuickStock.Domain.ChatGroupMember", b =>
+            modelBuilder.Entity("QuickStock.Domain.ITassets.ChatGroupMember", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -256,7 +362,7 @@ namespace QuickStock.Migrations
                     b.ToTable("ChatGroupMembers");
                 });
 
-            modelBuilder.Entity("QuickStock.Domain.ChatMessage", b =>
+            modelBuilder.Entity("QuickStock.Domain.ITassets.ChatMessage", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -291,7 +397,7 @@ namespace QuickStock.Migrations
                     b.ToTable("ChatMessages");
                 });
 
-            modelBuilder.Entity("QuickStock.Domain.ItAsset", b =>
+            modelBuilder.Entity("QuickStock.Domain.ITassets.ItAsset", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -326,7 +432,6 @@ namespace QuickStock.Migrations
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("Qrcode")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("varchar(500)");
 
@@ -357,7 +462,7 @@ namespace QuickStock.Migrations
                     b.ToTable("Itassets");
                 });
 
-            modelBuilder.Entity("QuickStock.Domain.PostComment", b =>
+            modelBuilder.Entity("QuickStock.Domain.ITassets.PostComment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -387,7 +492,7 @@ namespace QuickStock.Migrations
                     b.ToTable("PostComments");
                 });
 
-            modelBuilder.Entity("QuickStock.Domain.PostImage", b =>
+            modelBuilder.Entity("QuickStock.Domain.ITassets.PostImage", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -409,7 +514,7 @@ namespace QuickStock.Migrations
                     b.ToTable("PostImages");
                 });
 
-            modelBuilder.Entity("QuickStock.Domain.PostReaction", b =>
+            modelBuilder.Entity("QuickStock.Domain.ITassets.PostReaction", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -436,7 +541,7 @@ namespace QuickStock.Migrations
                     b.ToTable("PostReactions");
                 });
 
-            modelBuilder.Entity("QuickStock.Domain.Profile", b =>
+            modelBuilder.Entity("QuickStock.Domain.ITassets.Profile", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -486,7 +591,7 @@ namespace QuickStock.Migrations
                     b.ToTable("Profiles");
                 });
 
-            modelBuilder.Entity("QuickStock.Domain.ProfilePost", b =>
+            modelBuilder.Entity("QuickStock.Domain.ITassets.ProfilePost", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -511,7 +616,7 @@ namespace QuickStock.Migrations
                     b.ToTable("ProfilePosts");
                 });
 
-            modelBuilder.Entity("QuickStock.Domain.Room", b =>
+            modelBuilder.Entity("QuickStock.Domain.ITassets.Room", b =>
                 {
                     b.Property<int>("RoomId")
                         .ValueGeneratedOnAdd()
@@ -575,15 +680,75 @@ namespace QuickStock.Migrations
                         });
                 });
 
-            modelBuilder.Entity("QuickStock.Domain.AccountCampus", b =>
+            modelBuilder.Entity("QuickStock.Domain.ITassets.StoredImage", b =>
                 {
-                    b.HasOne("QuickStock.Domain.Account", "Account")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ContentType")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<byte[]>("Data")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<DateTime>("UploadedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StoredImages");
+                });
+
+            modelBuilder.Entity("QuickStock.Domain.Apparel.ApparelItem", b =>
+                {
+                    b.HasOne("QuickStock.Domain.Apparel.Appareldata", "ApparelType")
+                        .WithMany("Items")
+                        .HasForeignKey("AppareldataId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("QuickStock.Domain.ITassets.Campus", "Campus")
+                        .WithMany()
+                        .HasForeignKey("CampusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApparelType");
+
+                    b.Navigation("Campus");
+                });
+
+            modelBuilder.Entity("QuickStock.Domain.Apparel.Appareldata", b =>
+                {
+                    b.HasOne("QuickStock.Domain.ITassets.Campus", "Campus")
+                        .WithMany()
+                        .HasForeignKey("CampusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Campus");
+                });
+
+            modelBuilder.Entity("QuickStock.Domain.ITassets.AccountCampus", b =>
+                {
+                    b.HasOne("QuickStock.Domain.ITassets.Account", "Account")
                         .WithMany("AccountCampuses")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("QuickStock.Domain.Campus", "Campus")
+                    b.HasOne("QuickStock.Domain.ITassets.Campus", "Campus")
                         .WithMany()
                         .HasForeignKey("CampusId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -594,9 +759,9 @@ namespace QuickStock.Migrations
                     b.Navigation("Campus");
                 });
 
-            modelBuilder.Entity("QuickStock.Domain.ChatGroup", b =>
+            modelBuilder.Entity("QuickStock.Domain.ITassets.ChatGroup", b =>
                 {
-                    b.HasOne("QuickStock.Domain.Account", "CreatedBy")
+                    b.HasOne("QuickStock.Domain.ITassets.Account", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedByAccountId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -605,15 +770,15 @@ namespace QuickStock.Migrations
                     b.Navigation("CreatedBy");
                 });
 
-            modelBuilder.Entity("QuickStock.Domain.ChatGroupMember", b =>
+            modelBuilder.Entity("QuickStock.Domain.ITassets.ChatGroupMember", b =>
                 {
-                    b.HasOne("QuickStock.Domain.Account", "Account")
+                    b.HasOne("QuickStock.Domain.ITassets.Account", "Account")
                         .WithMany()
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("QuickStock.Domain.ChatGroup", "Group")
+                    b.HasOne("QuickStock.Domain.ITassets.ChatGroup", "Group")
                         .WithMany("Members")
                         .HasForeignKey("ChatGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -624,17 +789,17 @@ namespace QuickStock.Migrations
                     b.Navigation("Group");
                 });
 
-            modelBuilder.Entity("QuickStock.Domain.ChatMessage", b =>
+            modelBuilder.Entity("QuickStock.Domain.ITassets.ChatMessage", b =>
                 {
-                    b.HasOne("QuickStock.Domain.ChatGroup", "Group")
+                    b.HasOne("QuickStock.Domain.ITassets.ChatGroup", "Group")
                         .WithMany("Messages")
                         .HasForeignKey("GroupId");
 
-                    b.HasOne("QuickStock.Domain.Account", "Receiver")
+                    b.HasOne("QuickStock.Domain.ITassets.Account", "Receiver")
                         .WithMany()
                         .HasForeignKey("ReceiverAccountId");
 
-                    b.HasOne("QuickStock.Domain.Account", "Sender")
+                    b.HasOne("QuickStock.Domain.ITassets.Account", "Sender")
                         .WithMany()
                         .HasForeignKey("SenderAccountId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -647,15 +812,15 @@ namespace QuickStock.Migrations
                     b.Navigation("Sender");
                 });
 
-            modelBuilder.Entity("QuickStock.Domain.ItAsset", b =>
+            modelBuilder.Entity("QuickStock.Domain.ITassets.ItAsset", b =>
                 {
-                    b.HasOne("QuickStock.Domain.Campus", "Campus")
+                    b.HasOne("QuickStock.Domain.ITassets.Campus", "Campus")
                         .WithMany()
                         .HasForeignKey("CampusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("QuickStock.Domain.Room", "Room")
+                    b.HasOne("QuickStock.Domain.ITassets.Room", "Room")
                         .WithMany()
                         .HasForeignKey("RoomId");
 
@@ -664,15 +829,15 @@ namespace QuickStock.Migrations
                     b.Navigation("Room");
                 });
 
-            modelBuilder.Entity("QuickStock.Domain.PostComment", b =>
+            modelBuilder.Entity("QuickStock.Domain.ITassets.PostComment", b =>
                 {
-                    b.HasOne("QuickStock.Domain.Account", "Author")
+                    b.HasOne("QuickStock.Domain.ITassets.Account", "Author")
                         .WithMany()
                         .HasForeignKey("AuthorAccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("QuickStock.Domain.ProfilePost", "Post")
+                    b.HasOne("QuickStock.Domain.ITassets.ProfilePost", "Post")
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -683,9 +848,9 @@ namespace QuickStock.Migrations
                     b.Navigation("Post");
                 });
 
-            modelBuilder.Entity("QuickStock.Domain.PostImage", b =>
+            modelBuilder.Entity("QuickStock.Domain.ITassets.PostImage", b =>
                 {
-                    b.HasOne("QuickStock.Domain.ProfilePost", "Post")
+                    b.HasOne("QuickStock.Domain.ITassets.ProfilePost", "Post")
                         .WithMany("Images")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -694,15 +859,15 @@ namespace QuickStock.Migrations
                     b.Navigation("Post");
                 });
 
-            modelBuilder.Entity("QuickStock.Domain.PostReaction", b =>
+            modelBuilder.Entity("QuickStock.Domain.ITassets.PostReaction", b =>
                 {
-                    b.HasOne("QuickStock.Domain.Account", "Author")
+                    b.HasOne("QuickStock.Domain.ITassets.Account", "Author")
                         .WithMany()
                         .HasForeignKey("AuthorAccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("QuickStock.Domain.ProfilePost", "Post")
+                    b.HasOne("QuickStock.Domain.ITassets.ProfilePost", "Post")
                         .WithMany("Reactions")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -713,20 +878,20 @@ namespace QuickStock.Migrations
                     b.Navigation("Post");
                 });
 
-            modelBuilder.Entity("QuickStock.Domain.Profile", b =>
+            modelBuilder.Entity("QuickStock.Domain.ITassets.Profile", b =>
                 {
-                    b.HasOne("QuickStock.Domain.Account", "Account")
+                    b.HasOne("QuickStock.Domain.ITassets.Account", "Account")
                         .WithOne("Profile")
-                        .HasForeignKey("QuickStock.Domain.Profile", "AccountId")
+                        .HasForeignKey("QuickStock.Domain.ITassets.Profile", "AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Account");
                 });
 
-            modelBuilder.Entity("QuickStock.Domain.ProfilePost", b =>
+            modelBuilder.Entity("QuickStock.Domain.ITassets.ProfilePost", b =>
                 {
-                    b.HasOne("QuickStock.Domain.Account", "Author")
+                    b.HasOne("QuickStock.Domain.ITassets.Account", "Author")
                         .WithMany()
                         .HasForeignKey("AuthorAccountId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -735,9 +900,9 @@ namespace QuickStock.Migrations
                     b.Navigation("Author");
                 });
 
-            modelBuilder.Entity("QuickStock.Domain.Room", b =>
+            modelBuilder.Entity("QuickStock.Domain.ITassets.Room", b =>
                 {
-                    b.HasOne("QuickStock.Domain.Campus", "Campus")
+                    b.HasOne("QuickStock.Domain.ITassets.Campus", "Campus")
                         .WithMany()
                         .HasForeignKey("CampusId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -746,21 +911,26 @@ namespace QuickStock.Migrations
                     b.Navigation("Campus");
                 });
 
-            modelBuilder.Entity("QuickStock.Domain.Account", b =>
+            modelBuilder.Entity("QuickStock.Domain.Apparel.Appareldata", b =>
+                {
+                    b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("QuickStock.Domain.ITassets.Account", b =>
                 {
                     b.Navigation("AccountCampuses");
 
                     b.Navigation("Profile");
                 });
 
-            modelBuilder.Entity("QuickStock.Domain.ChatGroup", b =>
+            modelBuilder.Entity("QuickStock.Domain.ITassets.ChatGroup", b =>
                 {
                     b.Navigation("Members");
 
                     b.Navigation("Messages");
                 });
 
-            modelBuilder.Entity("QuickStock.Domain.ProfilePost", b =>
+            modelBuilder.Entity("QuickStock.Domain.ITassets.ProfilePost", b =>
                 {
                     b.Navigation("Comments");
 

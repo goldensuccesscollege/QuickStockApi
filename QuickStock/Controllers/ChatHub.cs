@@ -3,6 +3,7 @@ using QuickStock.Domain;
 using QuickStock.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using QuickStock.Domain.ITassets;
 
 namespace QuickStock.Controllers
 {

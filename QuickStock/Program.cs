@@ -19,11 +19,9 @@ builder.Services.AddSignalR();
 // -------------------------
 // Database
 // -------------------------
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options =>
-options.UseMySql(
-builder.Configuration.GetConnectionString("DefaultConnection"),
-ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
-)
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
 );
 
 // -------------------------
@@ -38,6 +36,7 @@ builder.Services.AddScoped<EmailService>();
 // Auth service
 // -------------------------
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IImageService, ImageService>();
 
 // -------------------------
 // Profile Service
@@ -53,7 +52,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend", policy =>
     {
         policy
-        .WithOrigins("https://localhost:7058", "http://localhost:5020", "http://127.0.0.1:5020")
+        .WithOrigins("https://localhost:7058")
         .AllowAnyHeader()
         .AllowAnyMethod()
         .AllowCredentials(); // Required for SignalR
@@ -129,5 +128,26 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.MapHub<QuickStock.Controllers.ChatHub>("/chatHub");
+
+// -------------------------
+// Database Initialization
+// -------------------------
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<AppDbContext>();
+        if (app.Environment.IsDevelopment())
+        {
+            context.Database.Migrate();
+        }
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while migrating the database.");
+    }
+}
 
 app.Run();

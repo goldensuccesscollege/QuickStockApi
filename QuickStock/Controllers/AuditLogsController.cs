@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using QuickStock.Domain;
 using QuickStock.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
+using QuickStock.Domain.ITassets;
 
 namespace QuickStock.Controllers
 {
@@ -19,7 +19,7 @@ namespace QuickStock.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AuditLog>>> GetAuditLogs(int? campusId = null)
+        public async Task<IActionResult> GetAuditLogs(int? campusId = null, int page = 1, int pageSize = 10)
         {
             IQueryable<AuditLog> query = _context.AuditLogs.OrderByDescending(l => l.Timestamp);
 
@@ -28,7 +28,17 @@ namespace QuickStock.Controllers
                 query = query.Where(l => l.CampusId == campusId.Value);
             }
 
-            return await query.Take(50).ToListAsync();
+            var totalItems = await query.CountAsync();
+            var logs = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            return Ok(new 
+            { 
+                totalItems, 
+                logs,
+                page,
+                pageSize,
+                totalPages = (int)Math.Ceiling((double)totalItems / pageSize)
+            });
         }
     }
 }

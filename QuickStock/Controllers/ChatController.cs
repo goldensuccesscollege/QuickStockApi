@@ -107,7 +107,7 @@ namespace QuickStock.Controllers
             var creator = await _context.Accounts.FirstOrDefaultAsync(a => a.Username == currentUsername);
             if (creator == null) return Unauthorized();
 
-            var group = new Domain.ChatGroup
+            var group = new Domain.ITassets.ChatGroup
             {
                 Name = dto.Name,
                 CreatedByAccountId = creator.Id,
@@ -126,7 +126,7 @@ namespace QuickStock.Controllers
 
             var members = await _context.Accounts
                 .Where(a => memberUsernames.Contains(a.Username))
-                .Select(a => new Domain.ChatGroupMember
+                .Select(a => new Domain.ITassets.ChatGroupMember
                 {
                     ChatGroupId = group.Id,
                     AccountId = a.Id

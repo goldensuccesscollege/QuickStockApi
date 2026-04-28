@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using QuickStock.Domain;
 using QuickStock.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
+using QuickStock.Domain.ITassets;
 
 namespace QuickStock.Controllers
 {
@@ -39,7 +39,7 @@ namespace QuickStock.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ItAsset>>> GetItassets(int? roomId = null, int? campusId = null)
+        public async Task<ActionResult<IEnumerable<ItAsset>>> GetItassets(int? roomId = null, int? campusId = null, string? searchTerm = null)
         {
             IQueryable<ItAsset> query = _context.Itassets.Include(a => a.Room);
 
@@ -57,6 +57,15 @@ namespace QuickStock.Controllers
             if (roomId.HasValue && roomId.Value > 0)
             {
                 query = query.Where(a => a.RoomId == roomId.Value);
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                searchTerm = searchTerm.Trim().ToLower();
+                query = query.Where(a => 
+                    a.Name.ToLower().Contains(searchTerm) || 
+                    (a.Brand != null && a.Brand.ToLower().Contains(searchTerm)) || 
+                    (a.SerialNumber != null && a.SerialNumber.ToLower().Contains(searchTerm)));
             }
 
             var assets = await query.ToListAsync();
@@ -80,6 +89,12 @@ namespace QuickStock.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(ItAsset asset)
         {
+            if (!string.IsNullOrWhiteSpace(asset.SerialNumber))
+            {
+                var duplicate = await _context.Itassets.AnyAsync(a => a.SerialNumber == asset.SerialNumber && a.CampusId == asset.CampusId);
+                if (duplicate) return BadRequest("An item with this serial number already exists in this campus.");
+            }
+
             if (string.IsNullOrWhiteSpace(asset.Qrcode))
             {
                 asset.Qrcode = Guid.NewGuid().ToString("N").Substring(0, 12).ToUpper();
@@ -112,6 +127,13 @@ namespace QuickStock.Controllers
         public async Task<IActionResult> Update(int id, ItAsset asset)
         {
             if (id != asset.Id) return BadRequest();
+
+            if (!string.IsNullOrWhiteSpace(asset.SerialNumber))
+            {
+                var duplicate = await _context.Itassets.AnyAsync(a => a.SerialNumber == asset.SerialNumber && a.CampusId == asset.CampusId && a.Id != id);
+                if (duplicate) return BadRequest("An item with this serial number already exists in this campus.");
+            }
+
 
             var existingAsset = await _context.Itassets.FindAsync(id);
             if (existingAsset == null) return NotFound();

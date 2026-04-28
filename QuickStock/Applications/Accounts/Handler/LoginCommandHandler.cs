@@ -42,9 +42,12 @@ namespace QuickStock.Applications.Accounts.Handler
             if (user.Verified == null)
                 throw new UnauthorizedException("Account not verified.");
 
-            // ❌ Inactive
+            // ❌ Inactive or Disabled
             if (user.Status == "Inactive")
                 throw new UnauthorizedException("This account is inactive. Please contact support.");
+
+            if (user.Status == "Disabled")
+                throw new UnauthorizedException("Your account was disabled.");
 
             // ❌ Wrong password
             if (!PasswordHelper.VerifyPassword(
@@ -90,7 +93,9 @@ namespace QuickStock.Applications.Accounts.Handler
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
                 Email = user.Email,
                 Role = user.Role,
-                CampusIds = activeCampuses.Select(ac => ac.CampusId).ToList()
+                CampusIds = activeCampuses.Select(ac => ac.CampusId).ToList(),
+                CanAccessITAssets = user.CanAccessITAssets,
+                CanAccessApparel = user.CanAccessApparel
             };
         }
     }

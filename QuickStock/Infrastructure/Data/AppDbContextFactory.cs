@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 
 namespace QuickStock.Infrastructure.Data
 {
@@ -7,12 +8,20 @@ namespace QuickStock.Infrastructure.Data
     {
         public AppDbContext CreateDbContext(string[] args)
         {
-            var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+            var basePath = Directory.GetCurrentDirectory();
+            
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(basePath)
+                .AddJsonFile("appsettings.json")
+                .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", true)
+                .Build();
 
-            // 👇 Put your actual connection string here
+            var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+
             optionsBuilder.UseMySql(
-                "server=localhost;database=Quickstock;user=root;password=Unknownuser;",
-                new MySqlServerVersion(new Version(8, 0, 36)) // adjust to your MySQL version
+                connectionString,
+                ServerVersion.AutoDetect(connectionString)
             );
 
             return new AppDbContext(optionsBuilder.Options);

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace QuickStock.Domain
+namespace QuickStock.Domain.ITassets
 {
     public class ProfilePost
     {

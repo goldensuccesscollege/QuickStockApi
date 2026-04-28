@@ -5,7 +5,7 @@ using QuickStock.Applications.Profile.DTO_s;
 using QuickStock.Applications.Profile.Handler;
 using Microsoft.EntityFrameworkCore;
 using QuickStock.Infrastructure.Data;
-using QuickStock.Domain;
+using QuickStock.Domain.ITassets;
 using System.IO;
 using System;
 using System.Linq;

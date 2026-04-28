@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using QuickStock.Applications.Profile.DTO_s;
-using QuickStock.Domain;
+using QuickStock.Domain.ITassets;
 using QuickStock.Infrastructure.Data;
 
 namespace QuickStock.Applications.Profile.Handler

@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace QuickStock.Domain
+namespace QuickStock.Domain.ITassets
 {
     public class Account
     {
@@ -43,6 +43,9 @@ namespace QuickStock.Domain
 
         [MaxLength(255)]
         public string Status { get; set; } = string.Empty;
+
+        public bool CanAccessITAssets { get; set; } = true;
+        public bool CanAccessApparel { get; set; } = true;
 
         public virtual ICollection<AccountCampus> AccountCampuses { get; set; } = new List<AccountCampus>();
 

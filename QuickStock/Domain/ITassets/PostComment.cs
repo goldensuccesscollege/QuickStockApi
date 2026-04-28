@@ -1,14 +1,15 @@
-using QuickStock.Domain;
+using System;
 
-namespace QuickStock.Domain
+namespace QuickStock.Domain.ITassets
 {
-    public class PostReaction
+    public class PostComment
     {
         public int Id { get; set; }
         public int PostId { get; set; }
         public ProfilePost Post { get; set; } = null!;
         public int AuthorAccountId { get; set; }
         public Account Author { get; set; } = null!;
-        public string Type { get; set; } = "Like";
+        public string Content { get; set; } = string.Empty;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

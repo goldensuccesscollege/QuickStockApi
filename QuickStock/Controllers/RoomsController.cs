@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using QuickStock.Domain;
 using QuickStock.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
+using QuickStock.Domain.ITassets;
 
 namespace QuickStock.Controllers
 {
@@ -73,6 +73,23 @@ namespace QuickStock.Controllers
         [HttpPost]
         public async Task<ActionResult<Room>> CreateRoom(Room room)
         {
+            var campus = await _context.Campuses.FindAsync(room.CampusId);
+            if (campus == null) return BadRequest("Campus not found.");
+
+            if (string.Equals(room.RoomName.Trim(), campus.Name.Trim(), StringComparison.OrdinalIgnoreCase))
+            {
+                return BadRequest("Room name cannot be the same as the campus name.");
+            }
+
+            var roomExists = await _context.Rooms.AnyAsync(r => 
+                r.CampusId == room.CampusId && 
+                r.RoomName.ToLower() == room.RoomName.ToLower());
+
+            if (roomExists)
+            {
+                return BadRequest("A room with this name already exists in this campus.");
+            }
+
             _context.Rooms.Add(room);
             await _context.SaveChangesAsync();
 
@@ -85,6 +102,25 @@ namespace QuickStock.Controllers
         public async Task<IActionResult> UpdateRoom(int id, Room room)
         {
             if (id != room.RoomId) return BadRequest();
+
+            var campus = await _context.Campuses.FindAsync(room.CampusId);
+            if (campus == null) return BadRequest("Campus not found.");
+
+            if (string.Equals(room.RoomName.Trim(), campus.Name.Trim(), StringComparison.OrdinalIgnoreCase))
+            {
+                return BadRequest("Room name cannot be the same as the campus name.");
+            }
+
+            var roomExists = await _context.Rooms.AnyAsync(r => 
+                r.CampusId == room.CampusId && 
+                r.RoomName.ToLower() == room.RoomName.ToLower() &&
+                r.RoomId != id);
+
+            if (roomExists)
+            {
+                return BadRequest("A room with this name already exists in this campus.");
+            }
+
             _context.Entry(room).State = EntityState.Modified;
             try { 
                 await _context.SaveChangesAsync(); 

@@ -12,6 +12,8 @@ namespace QuickStock.Applications.Accounts.Dto_s
         public string Email { get; set; } = string.Empty;
         public string Role { get; set; } = string.Empty;
         public System.Collections.Generic.List<int> CampusIds { get; set; } = new();
+        public bool CanAccessITAssets { get; set; }
+        public bool CanAccessApparel { get; set; }
     }
 
     public class RegisterRequest
