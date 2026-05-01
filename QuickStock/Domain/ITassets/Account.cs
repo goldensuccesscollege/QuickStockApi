@@ -46,6 +46,7 @@ namespace QuickStock.Domain.ITassets
 
         public bool CanAccessITAssets { get; set; } = true;
         public bool CanAccessApparel { get; set; } = true;
+        public bool CanAccessMessages { get; set; } = true;
 
         public virtual ICollection<AccountCampus> AccountCampuses { get; set; } = new List<AccountCampus>();
 

@@ -95,7 +95,8 @@ namespace QuickStock.Applications.Accounts.Handler
                 Role = user.Role,
                 CampusIds = activeCampuses.Select(ac => ac.CampusId).ToList(),
                 CanAccessITAssets = user.CanAccessITAssets,
-                CanAccessApparel = user.CanAccessApparel
+                CanAccessApparel = user.CanAccessApparel,
+                CanAccessMessages = user.CanAccessMessages
             };
         }
     }

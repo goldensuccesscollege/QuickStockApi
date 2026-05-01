@@ -19,13 +19,18 @@ namespace QuickStock.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAuditLogs(int? campusId = null, int page = 1, int pageSize = 10)
+        public async Task<IActionResult> GetAuditLogs(int? campusId = null, string? entityType = null, int page = 1, int pageSize = 10)
         {
             IQueryable<AuditLog> query = _context.AuditLogs.OrderByDescending(l => l.Timestamp);
 
             if (campusId.HasValue && campusId.Value > 0)
             {
                 query = query.Where(l => l.CampusId == campusId.Value);
+            }
+
+            if (!string.IsNullOrEmpty(entityType))
+            {
+                query = query.Where(l => l.EntityType == entityType);
             }
 
             var totalItems = await query.CountAsync();
