@@ -33,6 +33,7 @@ namespace QuickStock.Controllers
                     LastName = a.Profile != null ? a.Profile.LastName : "",
                     a.CanAccessITAssets,
                     a.CanAccessApparel,
+                    a.CanAccessMessages,
                     Campuses = a.AccountCampuses.Select(ac => new
                     {
                         ac.CampusId,
@@ -63,6 +64,7 @@ namespace QuickStock.Controllers
                 Verified = DateTime.UtcNow,
                 CanAccessITAssets = request.CanAccessITAssets,
                 CanAccessApparel = request.CanAccessApparel,
+                CanAccessMessages = request.CanAccessMessages,
                 Profile = new QuickStock.Domain.ITassets.Profile
                 {
                     FirstName = request.FirstName,
@@ -87,6 +89,7 @@ namespace QuickStock.Controllers
             account.Username = request.Username;
             account.CanAccessITAssets = request.CanAccessITAssets;
             account.CanAccessApparel = request.CanAccessApparel;
+            account.CanAccessMessages = request.CanAccessMessages;
             
             if (account.Profile != null)
             {
@@ -162,6 +165,38 @@ namespace QuickStock.Controllers
             mapping.IsBlocked = !mapping.IsBlocked;
             await _context.SaveChangesAsync();
             return Ok(new { isBlocked = mapping.IsBlocked });
+        }
+
+        [HttpPut("{id}/toggle-it-access")]
+        public async Task<IActionResult> ToggleITAccess(int id)
+        {
+            var account = await _context.Accounts.FindAsync(id);
+            if (account == null) return NotFound();
+
+            account.CanAccessITAssets = !account.CanAccessITAssets;
+            await _context.SaveChangesAsync();
+            return Ok(new { canAccessITAssets = account.CanAccessITAssets });
+        }
+
+        [HttpPut("{id}/toggle-ap-access")]
+        public async Task<IActionResult> ToggleAPAccess(int id)
+        {
+            var account = await _context.Accounts.FindAsync(id);
+            if (account == null) return NotFound();
+
+            account.CanAccessApparel = !account.CanAccessApparel;
+            await _context.SaveChangesAsync();
+            return Ok(new { canAccessApparel = account.CanAccessApparel });
+        }
+        [HttpPut("{id}/toggle-message-access")]
+        public async Task<IActionResult> ToggleMessageAccess(int id)
+        {
+            var account = await _context.Accounts.FindAsync(id);
+            if (account == null) return NotFound();
+
+            account.CanAccessMessages = !account.CanAccessMessages;
+            await _context.SaveChangesAsync();
+            return Ok(new { canAccessMessages = account.CanAccessMessages });
         }
     }
 }

@@ -14,6 +14,7 @@ namespace QuickStock.Applications.Accounts.Dto_s
         public System.Collections.Generic.List<int> CampusIds { get; set; } = new();
         public bool CanAccessITAssets { get; set; }
         public bool CanAccessApparel { get; set; }
+        public bool CanAccessMessages { get; set; }
     }
 
     public class RegisterRequest

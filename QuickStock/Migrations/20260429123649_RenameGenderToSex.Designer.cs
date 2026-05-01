@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuickStock.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using QuickStock.Infrastructure.Data;
 namespace QuickStock.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260429123649_RenameGenderToSex")]
+    partial class RenameGenderToSex
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,9 +45,6 @@ namespace QuickStock.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("LastModified")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Status")
@@ -140,9 +140,6 @@ namespace QuickStock.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("CanAccessITAssets")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<bool>("CanAccessMessages")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<DateTime>("Created")

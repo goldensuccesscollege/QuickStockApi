@@ -15,7 +15,6 @@ namespace QuickStock.Domain.Apparel
         [Required]
         public int AppareldataId { get; set; }
 
-        [JsonIgnore]
         [ForeignKey("AppareldataId")]
         public virtual Appareldata? ApparelType { get; set; }
 
@@ -34,5 +33,6 @@ namespace QuickStock.Domain.Apparel
         public virtual Campus? Campus { get; set; }
 
         public DateTime DateCreated { get; set; } = DateTime.UtcNow;
+        public DateTime LastModified { get; set; } = DateTime.UtcNow;
     }
 }

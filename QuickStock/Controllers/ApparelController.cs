@@ -40,7 +40,7 @@ namespace QuickStock.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Appareldata>>> GetApparel(int? campusId = null, string? searchTerm = null)
+        public async Task<IActionResult> GetApparel(int? campusId = null, string? searchTerm = null, int page = 1, int pageSize = 5)
         {
             IQueryable<Appareldata> query = _context.ApparelList.Include(a => a.Campus);
 
@@ -58,17 +58,100 @@ namespace QuickStock.Controllers
                     a.Supplier_Name.ToLower().Contains(searchTerm));
             }
 
-            var apparel = await query.ToListAsync();
-            return apparel;
+            var totalItems = await query.CountAsync();
+            var apparel = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return Ok(new 
+            { 
+                TotalItems = totalItems, 
+                Apparel = apparel,
+                Page = page,
+                PageSize = pageSize,
+                TotalPages = (int)Math.Ceiling((double)totalItems / pageSize)
+            });
         }
 
-        [HttpGet("{id}/items")]
-        public async Task<ActionResult<IEnumerable<ApparelItem>>> GetApparelItems(int id)
+        [HttpGet("sold")]
+        public async Task<IActionResult> GetSoldItems(int? campusId = null, int page = 1, int pageSize = 10)
+        {
+            IQueryable<ApparelItem> query = _context.ApparelItems
+                .Include(i => i.ApparelType)
+                .Where(i => i.Status == "Sold");
+
+            if (campusId.HasValue && campusId.Value > 0)
+            {
+                query = query.Where(i => i.CampusId == campusId.Value);
+            }
+
+            var totalItems = await query.CountAsync();
+            var items = await query
+                .OrderByDescending(i => i.Id)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return Ok(new 
+            { 
+                TotalItems = totalItems, 
+                Items = items,
+                Page = page,
+                PageSize = pageSize,
+                TotalPages = (int)Math.Ceiling((double)totalItems / pageSize)
+            });
+        }
+
+        [HttpGet("items/{apparelId}")]
+        public async Task<IActionResult> GetApparelItems(int apparelId)
         {
             var items = await _context.ApparelItems
-                .Where(i => i.AppareldataId == id)
+                .Where(i => i.AppareldataId == apparelId)
                 .ToListAsync();
-            return items;
+            return Ok(items);
+        }
+
+        [HttpGet("items/query")]
+        public async Task<IActionResult> QueryItems(string? status = null, DateTime? startDate = null, DateTime? endDate = null, int? campusId = null)
+        {
+            IQueryable<ApparelItem> query = _context.ApparelItems.Include(i => i.ApparelType);
+
+            if (!string.IsNullOrEmpty(status))
+            {
+                query = query.Where(i => i.Status == status);
+            }
+
+            if (campusId.HasValue && campusId.Value > 0)
+            {
+                query = query.Where(i => i.CampusId == campusId.Value);
+            }
+
+            if (startDate.HasValue)
+            {
+                query = query.Where(i => i.LastModified >= startDate.Value);
+            }
+
+            if (endDate.HasValue)
+            {
+                var endOfDate = endDate.Value.Date.AddDays(1).AddTicks(-1);
+                query = query.Where(i => i.LastModified <= endOfDate);
+            }
+
+            var items = await query.OrderByDescending(i => i.LastModified).ToListAsync();
+            return Ok(items);
+        }
+
+        [HttpGet("item/qr/{qr}")]
+        public async Task<ActionResult<ApparelItem>> GetApparelItemByQr(string qr)
+        {
+            var item = await _context.ApparelItems
+                .Include(i => i.ApparelType)
+                .Include(i => i.Campus)
+                .FirstOrDefaultAsync(i => i.Apparel_Number == qr);
+
+            if (item == null) return NotFound();
+            return item;
         }
 
         [HttpGet("{id}")]
@@ -89,15 +172,18 @@ namespace QuickStock.Controllers
                 await _context.SaveChangesAsync();
 
                 // Automatically generate individual items based on quantity
+                var nextNum = 1;
                 var items = new List<ApparelItem>();
                 for (int i = 1; i <= apparel.Quality_In_Stock; i++)
                 {
                     items.Add(new ApparelItem
                     {
-                        AppareldataId = apparel.Apparel_ID,
-                        Apparel_Number = $"AP-{apparel.Apparel_ID}-{DateTime.Now.Year}-{i:D4}",
+                        ApparelType = apparel,
+                        Apparel_Number = $"{apparel.Apparel_Name.Substring(0, 3).ToUpper()}-{nextNum++:D4}",
                         Status = "In Stock",
-                        CampusId = apparel.CampusId
+                        CampusId = apparel.CampusId,
+                        DateCreated = DateTime.UtcNow,
+                        LastModified = DateTime.UtcNow
                     });
                 }
                 _context.ApparelItems.AddRange(items);
@@ -105,14 +191,61 @@ namespace QuickStock.Controllers
 
                 await transaction.CommitAsync();
 
-                await LogAction("Add", apparel.Apparel_ID, apparel.Apparel_Name, $"Added new apparel type: {apparel.Apparel_Name} with {apparel.Quality_In_Stock} items.", apparel.CampusId);
+                await LogAction("Register", apparel.Apparel_ID, apparel.Apparel_Name, $"Registered {apparel.Quality_In_Stock} items", apparel.CampusId);
 
                 return CreatedAtAction(nameof(GetApparel), new { id = apparel.Apparel_ID }, apparel);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 await transaction.RollbackAsync();
-                throw;
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("{id}/add-stock")]
+        public async Task<IActionResult> AddStock(int id, [FromBody] int additionalQuantity)
+        {
+            if (additionalQuantity <= 0) return BadRequest("Quantity must be greater than zero.");
+
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                var apparel = await _context.ApparelList.FindAsync(id);
+                if (apparel == null) return NotFound();
+
+                // Get current item count to determine next sequence number
+                var currentItemsCount = await _context.ApparelItems
+                    .Where(i => i.AppareldataId == id)
+                    .CountAsync();
+
+                var newItems = new List<ApparelItem>();
+                for (int i = 1; i <= additionalQuantity; i++)
+                {
+                    newItems.Add(new ApparelItem
+                    {
+                        ApparelType = apparel,
+                        Apparel_Number = $"AP-{apparel.Apparel_ID}-{DateTime.Now.Year}-{(currentItemsCount + i):D4}",
+                        Status = "In Stock",
+                        CampusId = apparel.CampusId,
+                        DateCreated = DateTime.UtcNow,
+                        LastModified = DateTime.UtcNow
+                    });
+                }
+
+                _context.ApparelItems.AddRange(newItems);
+                apparel.Quality_In_Stock += additionalQuantity;
+                
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+
+                await LogAction("Add Stock", apparel.Apparel_ID, apparel.Apparel_Name, $"Added {additionalQuantity} more items", apparel.CampusId);
+
+                return Ok(new { success = true, newQuantity = apparel.Quality_In_Stock });
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                return BadRequest(ex.Message);
             }
         }
 
@@ -126,7 +259,7 @@ namespace QuickStock.Controllers
 
             existingApparel.Apparel_Name = apparel.Apparel_Name;
             existingApparel.Category = apparel.Category;
-            existingApparel.Gender = apparel.Gender;
+            existingApparel.Sex = apparel.Sex;
             existingApparel.Size = apparel.Size;
             existingApparel.Grade_Level = apparel.Grade_Level;
             existingApparel.Quality_In_Stock = apparel.Quality_In_Stock;
@@ -170,6 +303,54 @@ namespace QuickStock.Controllers
         private bool ApparelExists(int id)
         {
             return _context.ApparelList.Any(e => e.Apparel_ID == id);
+        }
+
+        [HttpPost("item/status")]
+        public async Task<IActionResult> UpdateItemStatus(int itemId, string status)
+        {
+            var newStatus = status;
+            var item = await _context.ApparelItems.Include(i => i.ApparelType).FirstOrDefaultAsync(i => i.Id == itemId);
+            if (item == null) return NotFound();
+
+            var oldStatus = item.Status;
+            item.Status = newStatus;
+            item.LastModified = DateTime.UtcNow;
+
+            try
+            {
+                // Update availability count
+                if (item.ApparelType != null)
+                {
+                    if (newStatus.Equals("Sold", StringComparison.OrdinalIgnoreCase) && !oldStatus.Equals("Sold", StringComparison.OrdinalIgnoreCase))
+                    {
+                        item.ApparelType.Quality_In_Stock--;
+                    }
+                    else if (!newStatus.Equals("Sold", StringComparison.OrdinalIgnoreCase) && oldStatus.Equals("Sold", StringComparison.OrdinalIgnoreCase))
+                    {
+                        item.ApparelType.Quality_In_Stock++;
+                    }
+                }
+
+                await _context.SaveChangesAsync();
+
+                if (newStatus.Equals("Sold", StringComparison.OrdinalIgnoreCase))
+                {
+                    var apparel = item.ApparelType;
+                    await LogAction("sold", item.Id, item.Apparel_Number, 
+                        $"Apparel Name: {apparel.Apparel_Name}, Apparel Number: {item.Apparel_Number}, Category: {apparel.Category}, Sex: {apparel.Sex}, Size: {apparel.Size}, Grade Level: {apparel.Grade_Level}, Unit Price: {apparel.Unit_Price:C}", 
+                        item.CampusId);
+                }
+                else
+                {
+                    await LogAction("UpdateStatus", item.Id, item.Apparel_Number, $"Changed status from {oldStatus} to {newStatus}", item.CampusId);
+                }
+            }
+            catch (DbUpdateException)
+            {
+                throw;
+            }
+
+            return NoContent();
         }
     }
 }

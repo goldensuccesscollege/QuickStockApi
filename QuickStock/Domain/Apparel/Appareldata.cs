@@ -18,7 +18,7 @@ namespace QuickStock.Domain.Apparel
         public string Category { get; set; } = string.Empty;
 
         [MaxLength(50)]
-        public string Gender { get; set; } = string.Empty;
+        public string Sex { get; set; } = string.Empty;
 
         [MaxLength(50)]
         public string Size { get; set; } = string.Empty;
@@ -47,6 +47,7 @@ namespace QuickStock.Domain.Apparel
         [ForeignKey("CampusId")]
         public virtual Campus? Campus { get; set; }
 
+        [System.Text.Json.Serialization.JsonIgnore]
         public virtual ICollection<ApparelItem> Items { get; set; } = new List<ApparelItem>();
     }
 }
