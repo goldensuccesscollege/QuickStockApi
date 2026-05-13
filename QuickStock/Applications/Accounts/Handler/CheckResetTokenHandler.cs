@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using QuickStock.Applications.Accounts.Queries;
 using QuickStock.Infrastructure.Data;

@@ -4,6 +4,15 @@ using QuickStock.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using QuickStock.Domain.ITassets;
+using QuickStock.Domain.Messaging;
+using QuickStock.Domain.Social;
+using QuickStock.Domain.Locations;
+using QuickStock.Domain.Shared;
+using QuickStock.Domain.Accounts;
+using QuickStock.Domain.Messaging;
+using QuickStock.Domain.Social;
+using QuickStock.Domain.Locations;
+using QuickStock.Domain.Shared;
 
 namespace QuickStock.Controllers
 {
@@ -11,10 +20,12 @@ namespace QuickStock.Controllers
     public class ChatHub : Hub
     {
         private readonly AppDbContext _context;
+        private readonly QuickStock.Infrastructure.Services.INotificationService _notificationService;
 
-        public ChatHub(AppDbContext context)
+        public ChatHub(AppDbContext context, QuickStock.Infrastructure.Services.INotificationService notificationService)
         {
             _context = context;
+            _notificationService = notificationService;
         }
 
         public override async Task OnConnectedAsync()
@@ -39,6 +50,9 @@ namespace QuickStock.Controllers
         {
             var senderUsername = Context.User?.Identity?.Name;
             if (string.IsNullOrEmpty(senderUsername)) return;
+
+            // Viewer restriction: Cannot create (send) messages
+            if (Context.User.IsInRole("Viewer")) return;
 
             var sender = await _context.Accounts
                 .Include(a => a.Profile)
@@ -75,11 +89,18 @@ namespace QuickStock.Controllers
             {
                 // Group message
                 await Clients.Group("Group_" + groupId.Value).SendAsync("ReceiveMessage", senderUsername, senderFullName, message, formattedTime, false, senderImagePath, groupId);
+                
+                // Notify group members
+                await _notificationService.NotifyGroup(groupId.Value, $"New Message in group from {senderFullName}", message);
             }
             else if (receiver != null)
             {
                 // Private message
                 await Clients.User(receiver.Username).SendAsync("ReceiveMessage", senderUsername, senderFullName, message, formattedTime, true, senderImagePath);
+                
+                // Notify the receiver via NotificationHub
+                await _notificationService.NotifyUser(receiver.Username, $"New Message from {senderFullName}", message);
+
                 if (senderUsername != receiver.Username)
                 {
                     await Clients.Caller.SendAsync("ReceiveMessage", senderUsername, senderFullName, message, formattedTime, true, senderImagePath);

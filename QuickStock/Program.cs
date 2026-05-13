@@ -10,43 +10,43 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// -------------------------
+
 // Controllers
-// -------------------------
+
 builder.Services.AddControllers();
 builder.Services.AddSignalR();
 
-// -------------------------
+
 // Database
-// -------------------------
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
 );
 
-// -------------------------
+
 // Email service
-// -------------------------
+
 builder.Services.Configure<EmailSettings>(
 builder.Configuration.GetSection("EmailSettings")
 );
 builder.Services.AddScoped<EmailService>();
 
-// -------------------------
+
 // Auth service
-// -------------------------
+
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 
-// -------------------------
+
 // Profile Service
-// -------------------------
+
 builder.Services.AddScoped<QuickStock.Applications.Profile.Handler.UpdateProfileHandler>();
 builder.Services.AddScoped<QuickStock.Applications.Profile.Handler.GetProfileHandler>();
 
-// -------------------------
 // CORS
-// -------------------------
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
@@ -59,17 +59,19 @@ builder.Services.AddCors(options =>
     });
 });
 
-// -------------------------
+
 // MediatR
-// -------------------------
+
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssemblyContaining<LoginCommandHandler>();
 });
 
-// -------------------------
+builder.Services.AddHttpContextAccessor();
+
+
 // JWT Authentication
-// -------------------------
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -86,32 +88,49 @@ builder.Services.AddAuthentication(options =>
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
         ValidAudience = builder.Configuration["Jwt:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(
-    Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)
-    )
+            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)
+        )
+    };
+
+    options.Events = new JwtBearerEvents
+    {
+        OnTokenValidated = async context =>
+        {
+            var dbContext = context.HttpContext.RequestServices.GetRequiredService<AppDbContext>();
+            var userIdClaim = context.Principal?.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+            if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId))
+            {
+                var account = await dbContext.Accounts.AsNoTracking().FirstOrDefaultAsync(a => a.Id == userId);
+                if (account == null || account.Status != "Active")
+                {
+                    context.Fail("Account is disabled or no longer exists.");
+                }
+            }
+        }
     };
 });
 
-// -------------------------
+
 // Swagger
-// -------------------------
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// -------------------------
+
 // Build App
-// -------------------------
+
 
 var app = builder.Build();
 
-// -------------------------
+
 // Middleware Pipeline
-// -------------------------
+
 app.ConfigureCustomExceptionMiddleware();
 
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+   app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
@@ -128,10 +147,10 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.MapHub<QuickStock.Controllers.ChatHub>("/chatHub");
+app.MapHub<QuickStock.Controllers.NotificationHub>("/notificationHub");
 
-// -------------------------
+
 // Database Initialization
-// -------------------------
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;

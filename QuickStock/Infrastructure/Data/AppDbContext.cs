@@ -1,6 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using QuickStock.Domain.ITassets;
+using QuickStock.Domain.Messaging;
+using QuickStock.Domain.Social;
+using QuickStock.Domain.Locations;
+using QuickStock.Domain.Shared;
+using QuickStock.Domain.Accounts;
 using QuickStock.Domain.Apparel;
+using QuickStock.Domain.Library;
+using QuickStock.Domain.Furniture;
+using QuickStock.Domain.Consumables;
 
 namespace QuickStock.Infrastructure.Data
 {
@@ -28,10 +36,32 @@ namespace QuickStock.Infrastructure.Data
         public DbSet<StoredImage> StoredImages { get; set; }
         public DbSet<Appareldata> ApparelList { get; set; }
         public DbSet<ApparelItem> ApparelItems { get; set; }
+        public DbSet<Librarydata> LibraryBooks { get; set; }
+        public DbSet<LibraryBookItem> LibraryBookItems { get; set; }
+        public DbSet<Furniture> Furnitures { get; set; }
+        public DbSet<ConsumableData> ConsumableData { get; set; }
+        public DbSet<ConsumableItem> ConsumableItems { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // ... (Existing HasData and existing relations)
+
+            // ConsumableData -> Campus
+            modelBuilder.Entity<QuickStock.Domain.Consumables.ConsumableData>()
+                .HasOne<Campus>()
+                .WithMany()
+                .HasForeignKey(c => c.CampusId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // ConsumableItem -> ConsumableData
+            modelBuilder.Entity<QuickStock.Domain.Consumables.ConsumableItem>()
+                .HasOne(i => i.ConsumableData)
+                .WithMany(d => d.Items)
+                .HasForeignKey(i => i.ConsumableDataId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Campus>().HasData(
                 new Campus { CampusId = 1, Name = "Cebu Campus", Address = "Cebu City", Description = "Main Campus" },
@@ -110,7 +140,76 @@ namespace QuickStock.Infrastructure.Data
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
+            // --- Database Relations Integrity ---
+
+            // Room -> Campus (Restrict deletion if rooms exist)
+            modelBuilder.Entity<Room>()
+                .HasOne(r => r.Campus)
+                .WithMany()
+                .HasForeignKey(r => r.CampusId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // ItAsset -> Campus (Restrict deletion if assets exist)
+            modelBuilder.Entity<ItAsset>()
+                .HasOne(a => a.Campus)
+                .WithMany()
+                .HasForeignKey(a => a.CampusId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // ItAsset -> Room (Restrict deletion if assets exist)
+            modelBuilder.Entity<ItAsset>()
+                .HasOne(a => a.Room)
+                .WithMany()
+                .HasForeignKey(a => a.RoomId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Appareldata -> Campus (Restrict deletion if apparel exists)
+            modelBuilder.Entity<Appareldata>()
+                .HasOne(ap => ap.Campus)
+                .WithMany()
+                .HasForeignKey(ap => ap.CampusId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Librarydata -> Campus (Restrict deletion if books exist)
+            modelBuilder.Entity<Librarydata>()
+                .HasKey(l => l.ItemId);
+
+            modelBuilder.Entity<Librarydata>()
+                .HasOne(l => l.Campus)
+                .WithMany()
+                .HasForeignKey(l => l.CampusId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // LibraryBookItem -> Librarydata
+            modelBuilder.Entity<LibraryBookItem>()
+                .HasOne(i => i.Book)
+                .WithMany(b => b.Items)
+                .HasForeignKey(i => i.LibrarydataId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // LibraryBookItem -> Campus
+            modelBuilder.Entity<LibraryBookItem>()
+                .HasOne(i => i.Campus)
+                .WithMany()
+                .HasForeignKey(i => i.CampusId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Furniture -> Campus
+            modelBuilder.Entity<Furniture>()
+                .HasOne(f => f.Campus)
+                .WithMany()
+                .HasForeignKey(f => f.CampusId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Furniture -> Room
+            modelBuilder.Entity<Furniture>()
+                .HasOne(f => f.Room)
+                .WithMany()
+                .HasForeignKey(f => f.RoomId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             base.OnModelCreating(modelBuilder);
+
         }
     }
 }

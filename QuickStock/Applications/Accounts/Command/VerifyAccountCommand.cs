@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 
 namespace QuickStock.Applications.Accounts.Command
 {

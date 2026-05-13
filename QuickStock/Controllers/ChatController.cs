@@ -2,6 +2,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QuickStock.Infrastructure.Data;
+using QuickStock.Domain.ITassets;
+using QuickStock.Domain.Messaging;
+using QuickStock.Domain.Social;
+using QuickStock.Domain.Locations;
+using QuickStock.Domain.Shared;
+using QuickStock.Domain.Accounts;
 
 namespace QuickStock.Controllers
 {
@@ -35,7 +41,11 @@ namespace QuickStock.Controllers
             }
             else if (string.IsNullOrEmpty(withUser))
             {
-                // Global chat history
+                // Global chat history - Restricted for Viewers
+                if (User.IsInRole("Viewer"))
+                {
+                    return Ok(new List<object>()); // Return empty for global chat
+                }
                 query = query.Where(m => m.ReceiverAccountId == null && m.GroupId == null);
             }
             else
@@ -103,11 +113,13 @@ namespace QuickStock.Controllers
         [HttpPost("groups")]
         public async Task<IActionResult> CreateGroup([FromBody] CreateGroupDto dto)
         {
+            if (User.IsInRole("Viewer")) return Forbid("Viewers cannot create groups.");
+
             var currentUsername = User.Identity?.Name;
             var creator = await _context.Accounts.FirstOrDefaultAsync(a => a.Username == currentUsername);
             if (creator == null) return Unauthorized();
 
-            var group = new Domain.ITassets.ChatGroup
+            var group = new ChatGroup
             {
                 Name = dto.Name,
                 CreatedByAccountId = creator.Id,
@@ -126,7 +138,7 @@ namespace QuickStock.Controllers
 
             var members = await _context.Accounts
                 .Where(a => memberUsernames.Contains(a.Username))
-                .Select(a => new Domain.ITassets.ChatGroupMember
+                .Select(a => new ChatGroupMember
                 {
                     ChatGroupId = group.Id,
                     AccountId = a.Id

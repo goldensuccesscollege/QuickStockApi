@@ -1,202 +1,162 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using QuickStock.Domain.ITassets;
-using QuickStock.Infrastructure.Data;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using QuickStock.Applications.Users.Command;
+using QuickStock.Applications.Users.Dtos;
+using QuickStock.Applications.Users.Queries;
 
 namespace QuickStock.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Library Admin,Home Economics Admin")]
     public class UsersController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IMediator _mediator;
 
-        public UsersController(AppDbContext context)
+        public UsersController(IMediator mediator)
         {
-            _context = context;
+            _mediator = mediator;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<object>>> GetUsers()
         {
-            var users = await _context.Accounts
-                .Select(a => new
-                {
-                    a.Id,
-                    a.Username,
-                    a.Email,
-                    a.Role,
-                    Status = a.Status ?? "Active",
-                    FirstName = a.Profile != null ? a.Profile.FirstName : "",
-                    LastName = a.Profile != null ? a.Profile.LastName : "",
-                    a.CanAccessITAssets,
-                    a.CanAccessApparel,
-                    a.CanAccessMessages,
-                    Campuses = a.AccountCampuses.Select(ac => new
-                    {
-                        ac.CampusId,
-                        Name = ac.Campus != null ? ac.Campus.Name : "Unknown",
-                        ac.IsBlocked
-                    }).ToList()
-                })
-                .ToListAsync();
-            return Ok(users);
+            var result = await _mediator.Send(new GetUsersQuery());
+            return Ok(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateUser([FromBody] CreateUserRequest request)
+        public async Task<IActionResult> CreateUser([FromBody] CreateUserDto dto)
         {
-            if (await _context.Accounts.AnyAsync(a => a.Username == request.Username))
-                return BadRequest(new { message = "Username already exists" });
-
-            if (await _context.Accounts.AnyAsync(a => a.Email == request.Email))
-                return BadRequest(new { message = "Email already exists" });
-
-            var account = new Account
+            try
             {
-                Username = request.Username,
-                Email = request.Email,
-                Role = request.Role,
-                PasswordHash = QuickStock.Infrastructure.Security.PasswordHelper.HashPassword(request.Password),
-                Status = "Active",
-                Verified = DateTime.UtcNow,
-                CanAccessITAssets = request.CanAccessITAssets,
-                CanAccessApparel = request.CanAccessApparel,
-                CanAccessMessages = request.CanAccessMessages,
-                Profile = new QuickStock.Domain.ITassets.Profile
-                {
-                    FirstName = request.FirstName,
-                    LastName = request.LastName
-                }
-            };
-
-            _context.Accounts.Add(account);
-            await _context.SaveChangesAsync();
-
-            return Ok(new { message = "User created successfully" });
+                var result = await _mediator.Send(new CreateUserCommand(dto));
+                return Ok(result);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserRequest request)
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserDto dto)
         {
-            var account = await _context.Accounts.Include(a => a.Profile).FirstOrDefaultAsync(a => a.Id == id);
-            if (account == null) return NotFound();
-
-            account.Email = request.Email;
-            account.Role = request.Role;
-            account.Username = request.Username;
-            account.CanAccessITAssets = request.CanAccessITAssets;
-            account.CanAccessApparel = request.CanAccessApparel;
-            account.CanAccessMessages = request.CanAccessMessages;
-            
-            if (account.Profile != null)
-            {
-                account.Profile.FirstName = request.FirstName;
-                account.Profile.LastName = request.LastName;
-            }
-
-            await _context.SaveChangesAsync();
+            var success = await _mediator.Send(new UpdateUserCommand(id, dto));
+            if (!success) return NotFound();
             return Ok(new { message = "User updated successfully" });
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
-            var account = await _context.Accounts.FindAsync(id);
-            if (account == null) return NotFound();
-
-            _context.Accounts.Remove(account);
-            await _context.SaveChangesAsync();
+            var success = await _mediator.Send(new DeleteUserCommand(id));
+            if (!success) return NotFound();
             return Ok(new { message = "User deleted successfully" });
         }
 
         [HttpPut("{id}/toggle-status")]
         public async Task<IActionResult> ToggleUserStatus(int id)
         {
-            var account = await _context.Accounts.FindAsync(id);
-            if (account == null) return NotFound();
-
-            account.Status = account.Status == "Active" ? "Disabled" : "Active";
-            await _context.SaveChangesAsync();
-            return Ok(new { status = account.Status });
+            try
+            {
+                var result = await _mediator.Send(new ToggleUserStatusCommand(id));
+                return Ok(result);
+            }
+            catch (KeyNotFoundException) { return NotFound(); }
         }
 
         [HttpPost("{userId}/campuses")]
         public async Task<IActionResult> AddCampusAccess(int userId, [FromBody] int campusId)
         {
-            var exists = await _context.AccountCampuses
-                .AnyAsync(ac => ac.AccountId == userId && ac.CampusId == campusId);
-            
-            if (exists) return Ok();
-
-            _context.AccountCampuses.Add(new AccountCampus
-            {
-                AccountId = userId,
-                CampusId = campusId
-            });
-
-            await _context.SaveChangesAsync();
+            await _mediator.Send(new AddCampusAccessCommand(userId, campusId));
             return Ok();
         }
 
         [HttpDelete("{userId}/campuses/{campusId}")]
         public async Task<IActionResult> RemoveCampusAccess(int userId, int campusId)
         {
-            var mapping = await _context.AccountCampuses
-                .FirstOrDefaultAsync(ac => ac.AccountId == userId && ac.CampusId == campusId);
-            
-            if (mapping == null) return NotFound();
-
-            _context.AccountCampuses.Remove(mapping);
-            await _context.SaveChangesAsync();
+            var success = await _mediator.Send(new RemoveCampusAccessCommand(userId, campusId));
+            if (!success) return NotFound();
             return Ok();
         }
 
         [HttpPut("{userId}/campuses/{campusId}/toggle-block")]
         public async Task<IActionResult> ToggleBlock(int userId, int campusId)
         {
-            var mapping = await _context.AccountCampuses
-                .FirstOrDefaultAsync(ac => ac.AccountId == userId && ac.CampusId == campusId);
-            
-            if (mapping == null) return NotFound();
-
-            mapping.IsBlocked = !mapping.IsBlocked;
-            await _context.SaveChangesAsync();
-            return Ok(new { isBlocked = mapping.IsBlocked });
+            try
+            {
+                var result = await _mediator.Send(new ToggleCampusBlockCommand(userId, campusId));
+                return Ok(result);
+            }
+            catch (KeyNotFoundException) { return NotFound(); }
         }
 
         [HttpPut("{id}/toggle-it-access")]
         public async Task<IActionResult> ToggleITAccess(int id)
         {
-            var account = await _context.Accounts.FindAsync(id);
-            if (account == null) return NotFound();
-
-            account.CanAccessITAssets = !account.CanAccessITAssets;
-            await _context.SaveChangesAsync();
-            return Ok(new { canAccessITAssets = account.CanAccessITAssets });
+            try
+            {
+                var result = await _mediator.Send(new ToggleITAccessCommand(id));
+                return Ok(result);
+            }
+            catch (KeyNotFoundException) { return NotFound(); }
         }
 
         [HttpPut("{id}/toggle-ap-access")]
         public async Task<IActionResult> ToggleAPAccess(int id)
         {
-            var account = await _context.Accounts.FindAsync(id);
-            if (account == null) return NotFound();
-
-            account.CanAccessApparel = !account.CanAccessApparel;
-            await _context.SaveChangesAsync();
-            return Ok(new { canAccessApparel = account.CanAccessApparel });
+            try
+            {
+                var result = await _mediator.Send(new ToggleApparelAccessCommand(id));
+                return Ok(result);
+            }
+            catch (KeyNotFoundException) { return NotFound(); }
         }
+
         [HttpPut("{id}/toggle-message-access")]
         public async Task<IActionResult> ToggleMessageAccess(int id)
         {
-            var account = await _context.Accounts.FindAsync(id);
-            if (account == null) return NotFound();
+            try
+            {
+                var result = await _mediator.Send(new ToggleMessageAccessCommand(id));
+                return Ok(result);
+            }
+            catch (KeyNotFoundException) { return NotFound(); }
+        }
 
-            account.CanAccessMessages = !account.CanAccessMessages;
-            await _context.SaveChangesAsync();
-            return Ok(new { canAccessMessages = account.CanAccessMessages });
+        [HttpPut("{id}/toggle-library-access")]
+        public async Task<IActionResult> ToggleLibraryAccess(int id)
+        {
+            try
+            {
+                var result = await _mediator.Send(new ToggleLibraryAccessCommand(id));
+                return Ok(result);
+            }
+            catch (KeyNotFoundException) { return NotFound(); }
+        }
+
+        [HttpPut("{id}/toggle-he-access")]
+        public async Task<IActionResult> ToggleHomeEconomicsAccess(int id)
+        {
+            try
+            {
+                var result = await _mediator.Send(new ToggleHomeEconomicsAccessCommand(id));
+                return Ok(result);
+            }
+            catch (KeyNotFoundException) { return NotFound(); }
+        }
+
+        [HttpPut("{id}/toggle-consumables-access")]
+        public async Task<IActionResult> ToggleConsumablesAccess(int id)
+        {
+            try
+            {
+                var result = await _mediator.Send(new ToggleConsumablesAccessCommand(id));
+                return Ok(result);
+            }
+            catch (KeyNotFoundException) { return NotFound(); }
         }
     }
 }

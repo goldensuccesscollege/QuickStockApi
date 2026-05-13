@@ -1,4 +1,4 @@
-﻿namespace QuickStock.Infrastructure.Security
+namespace QuickStock.Infrastructure.Security
 {
     public class PasswordHelper
     {

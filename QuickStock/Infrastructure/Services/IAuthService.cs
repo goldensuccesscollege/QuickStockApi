@@ -1,4 +1,4 @@
-﻿using QuickStock.Applications.Accounts.Dto_s;
+using QuickStock.Applications.Accounts.Dto_s;
 
 
 namespace QuickStock.Infrastructure.Services

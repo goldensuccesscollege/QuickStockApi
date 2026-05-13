@@ -1,6 +1,15 @@
 using QuickStock.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using QuickStock.Domain.ITassets;
+using QuickStock.Domain.Messaging;
+using QuickStock.Domain.Social;
+using QuickStock.Domain.Locations;
+using QuickStock.Domain.Shared;
+using QuickStock.Domain.Accounts;
+using QuickStock.Domain.Messaging;
+using QuickStock.Domain.Social;
+using QuickStock.Domain.Locations;
+using QuickStock.Domain.Shared;
 
 namespace QuickStock.Infrastructure.Services
 {

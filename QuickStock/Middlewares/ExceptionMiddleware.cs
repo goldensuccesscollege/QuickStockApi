@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Diagnostics;
 using QuickStock.Common.Exceptions;
 
 namespace QuickStock.Middlewares
 {
-    // ✅ Static class (non-generic)
+    // ? Static class (non-generic)
     public static class ExceptionMiddlewareExtensions
     {
-        // ✅ Static method with 'this WebApplication app'
+        // ? Static method with 'this WebApplication app'
         public static void ConfigureCustomExceptionMiddleware(this WebApplication app)
         {
             app.UseExceptionHandler(errorApp =>

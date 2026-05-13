@@ -1,4 +1,4 @@
-﻿namespace QuickStock.Common.Exceptions
+namespace QuickStock.Common.Exceptions
 {
     public class UnauthorizedException : Exception
     {

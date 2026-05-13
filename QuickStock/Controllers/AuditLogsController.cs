@@ -1,8 +1,7 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using QuickStock.Infrastructure.Data;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using QuickStock.Domain.ITassets;
+using Microsoft.AspNetCore.Mvc;
+using QuickStock.Applications.AuditLogs.Queries;
 
 namespace QuickStock.Controllers
 {
@@ -11,39 +10,15 @@ namespace QuickStock.Controllers
     [Authorize]
     public class AuditLogsController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IMediator _mediator;
 
-        public AuditLogsController(AppDbContext context)
-        {
-            _context = context;
-        }
+        public AuditLogsController(IMediator mediator) => _mediator = mediator;
 
         [HttpGet]
         public async Task<IActionResult> GetAuditLogs(int? campusId = null, string? entityType = null, int page = 1, int pageSize = 10)
         {
-            IQueryable<AuditLog> query = _context.AuditLogs.OrderByDescending(l => l.Timestamp);
-
-            if (campusId.HasValue && campusId.Value > 0)
-            {
-                query = query.Where(l => l.CampusId == campusId.Value);
-            }
-
-            if (!string.IsNullOrEmpty(entityType))
-            {
-                query = query.Where(l => l.EntityType == entityType);
-            }
-
-            var totalItems = await query.CountAsync();
-            var logs = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
-
-            return Ok(new 
-            { 
-                totalItems, 
-                logs,
-                page,
-                pageSize,
-                totalPages = (int)Math.Ceiling((double)totalItems / pageSize)
-            });
+            var result = await _mediator.Send(new GetAuditLogsQuery(campusId, entityType, page, pageSize, User));
+            return Ok(result);
         }
     }
 }

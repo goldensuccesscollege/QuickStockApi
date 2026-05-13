@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using QuickStock.Applications.Accounts.Dto_s;
 using QuickStock.Infrastructure.Data;
 using System.Security.Cryptography;

@@ -5,6 +5,404 @@
     "version": "1.0"
   },
   "paths": {
+    "/api/Apparel": {
+      "get": {
+        "tags": [
+          "Apparel"
+        ],
+        "parameters": [
+          {
+            "name": "campusId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "searchTerm",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 5
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Apparel"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Appareldata"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Appareldata"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Appareldata"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Apparel/sold": {
+      "get": {
+        "tags": [
+          "Apparel"
+        ],
+        "parameters": [
+          {
+            "name": "campusId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Apparel/items/{apparelId}": {
+      "get": {
+        "tags": [
+          "Apparel"
+        ],
+        "parameters": [
+          {
+            "name": "apparelId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Apparel/items/query": {
+      "get": {
+        "tags": [
+          "Apparel"
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "campusId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Apparel/item/qr/{qr}": {
+      "get": {
+        "tags": [
+          "Apparel"
+        ],
+        "parameters": [
+          {
+            "name": "qr",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApparelItem"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApparelItem"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApparelItem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Apparel/{id}": {
+      "get": {
+        "tags": [
+          "Apparel"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Appareldata"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Appareldata"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Appareldata"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Apparel"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Appareldata"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Appareldata"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Appareldata"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Apparel"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Apparel/{id}/add-stock": {
+      "post": {
+        "tags": [
+          "Apparel"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Apparel/item/status": {
+      "post": {
+        "tags": [
+          "Apparel"
+        ],
+        "parameters": [
+          {
+            "name": "itemId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/AuditLogs": {
       "get": {
         "tags": [
@@ -18,37 +416,36 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "entityType",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AuditLog"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AuditLog"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AuditLog"
-                  }
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       }
@@ -525,6 +922,197 @@
         }
       }
     },
+    "/api/Furniture": {
+      "get": {
+        "tags": [
+          "Furniture"
+        ],
+        "parameters": [
+          {
+            "name": "roomId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "campusId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "searchTerm",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Furniture"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Furniture"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Furniture"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Furniture"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Furniture"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Furniture"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Furniture"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Furniture"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Furniture"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Furniture"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Furniture"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Furniture/qr/{qrCode}": {
+      "get": {
+        "tags": [
+          "Furniture"
+        ],
+        "parameters": [
+          {
+            "name": "qrCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Furniture"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Furniture"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Furniture"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Furniture/transfer": {
+      "post": {
+        "tags": [
+          "Furniture"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransferRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransferRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransferRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Image/upload": {
       "post": {
         "tags": [
@@ -600,6 +1188,13 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "searchTerm",
+            "in": "query",
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -843,6 +1438,302 @@
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Library": {
+      "get": {
+        "tags": [
+          "Library"
+        ],
+        "parameters": [
+          {
+            "name": "campusId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Librarydata"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Librarydata"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Librarydata"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Library"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Librarydata"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Librarydata"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Librarydata"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Librarydata"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Librarydata"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Librarydata"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Library/{id}": {
+      "get": {
+        "tags": [
+          "Library"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Librarydata"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Librarydata"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Librarydata"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Library"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Librarydata"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Librarydata"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Librarydata"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Library/{bookId}/items": {
+      "post": {
+        "tags": [
+          "Library"
+        ],
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LibraryBookItem"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LibraryBookItem"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LibraryBookItem"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/LibraryBookItem"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LibraryBookItem"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LibraryBookItem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Library/items/{itemId}": {
+      "put": {
+        "tags": [
+          "Library"
+        ],
+        "parameters": [
+          {
+            "name": "itemId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LibraryBookItem"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LibraryBookItem"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LibraryBookItem"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Library"
+        ],
+        "parameters": [
+          {
+            "name": "itemId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -1377,17 +2268,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateUserRequest"
+                "$ref": "#/components/schemas/CreateUserDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateUserRequest"
+                "$ref": "#/components/schemas/CreateUserDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateUserRequest"
+                "$ref": "#/components/schemas/CreateUserDto"
               }
             }
           }
@@ -1419,17 +2310,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateUserRequest"
+                "$ref": "#/components/schemas/UpdateUserDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateUserRequest"
+                "$ref": "#/components/schemas/UpdateUserDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateUserRequest"
+                "$ref": "#/components/schemas/UpdateUserDto"
               }
             }
           }
@@ -1593,14 +2484,131 @@
           }
         }
       }
+    },
+    "/api/Users/{id}/toggle-it-access": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Users/{id}/toggle-ap-access": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Users/{id}/toggle-message-access": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Users/{id}/toggle-library-access": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Users/{id}/toggle-he-access": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
-      "AuditLog": {
+      "ApparelItem": {
         "required": [
-          "action",
-          "entityType"
+          "apparel_Number",
+          "appareldataId",
+          "campusId",
+          "status"
         ],
         "type": "object",
         "properties": {
@@ -1608,47 +2616,109 @@
             "type": "integer",
             "format": "int32"
           },
-          "action": {
-            "maxLength": 100,
-            "minLength": 1,
-            "type": "string"
-          },
-          "entityType": {
-            "maxLength": 100,
-            "minLength": 1,
-            "type": "string"
-          },
-          "entityId": {
+          "appareldataId": {
             "type": "integer",
             "format": "int32"
           },
-          "entityName": {
-            "maxLength": 255,
-            "type": "string",
-            "nullable": true
+          "apparelType": {
+            "$ref": "#/components/schemas/Appareldata"
           },
-          "details": {
-            "maxLength": 2000,
-            "type": "string",
-            "nullable": true
+          "apparel_Number": {
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
           },
-          "timestamp": {
+          "status": {
+            "maxLength": 50,
+            "minLength": 1,
+            "type": "string"
+          },
+          "campusId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "campus": {
+            "$ref": "#/components/schemas/Campus"
+          },
+          "dateCreated": {
             "type": "string",
             "format": "date-time"
           },
-          "userId": {
+          "lastModified": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Appareldata": {
+        "required": [
+          "apparel_Name",
+          "campusId"
+        ],
+        "type": "object",
+        "properties": {
+          "apparel_ID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "apparel_Name": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "category": {
             "maxLength": 100,
             "type": "string",
             "nullable": true
           },
-          "username": {
+          "sex": {
+            "maxLength": 50,
+            "type": "string",
+            "nullable": true
+          },
+          "size": {
+            "maxLength": 50,
+            "type": "string",
+            "nullable": true
+          },
+          "grade_Level": {
+            "maxLength": 100,
+            "type": "string",
+            "nullable": true
+          },
+          "quality_In_Stock": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "reorder_level": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "date_Purchased": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "unit_Price": {
+            "type": "number",
+            "format": "double"
+          },
+          "supplier_Name": {
             "maxLength": 255,
+            "type": "string",
+            "nullable": true
+          },
+          "remarks": {
+            "maxLength": 500,
             "type": "string",
             "nullable": true
           },
           "campusId": {
             "type": "integer",
             "format": "int32"
+          },
+          "campus": {
+            "$ref": "#/components/schemas/Campus"
           }
         },
         "additionalProperties": false
@@ -1698,7 +2768,7 @@
         },
         "additionalProperties": false
       },
-      "CreateUserRequest": {
+      "CreateUserDto": {
         "type": "object",
         "properties": {
           "username": {
@@ -1724,6 +2794,21 @@
           "lastName": {
             "type": "string",
             "nullable": true
+          },
+          "canAccessITAssets": {
+            "type": "boolean"
+          },
+          "canAccessApparel": {
+            "type": "boolean"
+          },
+          "canAccessMessages": {
+            "type": "boolean"
+          },
+          "canAccessLibrary": {
+            "type": "boolean"
+          },
+          "canAccessHomeEconomics": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
@@ -1734,6 +2819,72 @@
           "email": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Furniture": {
+        "required": [
+          "item_Name"
+        ],
+        "type": "object",
+        "properties": {
+          "item_ID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "item_Name": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "item_number": {
+            "maxLength": 100,
+            "type": "string",
+            "nullable": true
+          },
+          "brand": {
+            "maxLength": 100,
+            "type": "string",
+            "nullable": true
+          },
+          "location": {
+            "maxLength": 255,
+            "type": "string",
+            "nullable": true
+          },
+          "dateAdded": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "condition": {
+            "maxLength": 500,
+            "type": "string",
+            "nullable": true
+          },
+          "qrcode": {
+            "maxLength": 500,
+            "type": "string",
+            "nullable": true
+          },
+          "item_count": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "roomId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "room": {
+            "$ref": "#/components/schemas/Room"
+          },
+          "campusId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "campus": {
+            "$ref": "#/components/schemas/Campus"
           }
         },
         "additionalProperties": false
@@ -1807,6 +2958,180 @@
           },
           "room": {
             "$ref": "#/components/schemas/Room"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LibraryBookItem": {
+        "required": [
+          "accessionNumber",
+          "campusId",
+          "librarydataId"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "librarydataId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "accessionNumber": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "qrCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "condition": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateAcquired": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "campusId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "campus": {
+            "$ref": "#/components/schemas/Campus"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Librarydata": {
+        "type": "object",
+        "properties": {
+          "itemId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "subtitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "author": {
+            "type": "string",
+            "nullable": true
+          },
+          "coAuthor": {
+            "type": "string",
+            "nullable": true
+          },
+          "publisher": {
+            "type": "string",
+            "nullable": true
+          },
+          "publicationYear": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "edition": {
+            "type": "string",
+            "nullable": true
+          },
+          "categoryId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "genre": {
+            "type": "string",
+            "nullable": true
+          },
+          "language": {
+            "type": "string",
+            "nullable": true
+          },
+          "shelfLocation": {
+            "type": "string",
+            "nullable": true
+          },
+          "callNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "isbn": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateAcquired": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "source": {
+            "type": "string",
+            "nullable": true
+          },
+          "donor": {
+            "type": "string",
+            "nullable": true
+          },
+          "acquisitionType": {
+            "type": "string",
+            "nullable": true
+          },
+          "coverImage": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "campusId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "campus": {
+            "$ref": "#/components/schemas/Campus"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LibraryBookItem"
+            },
+            "nullable": true
+          },
+          "initialAccessionNumber": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -1924,7 +3249,21 @@
         },
         "additionalProperties": false
       },
-      "UpdateUserRequest": {
+      "TransferRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "targetRoomId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateUserDto": {
         "type": "object",
         "properties": {
           "username": {
@@ -1946,6 +3285,21 @@
           "lastName": {
             "type": "string",
             "nullable": true
+          },
+          "canAccessITAssets": {
+            "type": "boolean"
+          },
+          "canAccessApparel": {
+            "type": "boolean"
+          },
+          "canAccessMessages": {
+            "type": "boolean"
+          },
+          "canAccessLibrary": {
+            "type": "boolean"
+          },
+          "canAccessHomeEconomics": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false

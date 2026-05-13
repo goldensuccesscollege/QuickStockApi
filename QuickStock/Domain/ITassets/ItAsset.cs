@@ -1,4 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using QuickStock.Domain.ITassets;
+using QuickStock.Domain.Messaging;
+using QuickStock.Domain.Social;
+using QuickStock.Domain.Locations;
+using QuickStock.Domain.Shared;
+using QuickStock.Domain.Accounts;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace QuickStock.Domain.ITassets
@@ -44,5 +50,8 @@ namespace QuickStock.Domain.ITassets
         
         [ForeignKey("RoomId")]
         public virtual Room? Room { get; set; }
+
+        [NotMapped]
+        public int TotalItemsInRoom { get; set; }
     }
 }

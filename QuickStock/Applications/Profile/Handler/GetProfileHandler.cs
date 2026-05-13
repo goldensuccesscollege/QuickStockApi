@@ -1,6 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using QuickStock.Applications.Profile.DTO_s;
 using QuickStock.Domain.ITassets;
+using QuickStock.Domain.Messaging;
+using QuickStock.Domain.Social;
+using QuickStock.Domain.Locations;
+using QuickStock.Domain.Shared;
+using QuickStock.Domain.Accounts;
+using QuickStock.Domain.Messaging;
+using QuickStock.Domain.Social;
+using QuickStock.Domain.Locations;
+using QuickStock.Domain.Shared;
 using QuickStock.Infrastructure.Data;
 
 namespace QuickStock.Applications.Profile.Handler

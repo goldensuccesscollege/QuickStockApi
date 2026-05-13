@@ -1,4 +1,4 @@
-﻿namespace QuickStock.Infrastructure.Config
+namespace QuickStock.Infrastructure.Config
 {
     public class EmailSettings
     {
