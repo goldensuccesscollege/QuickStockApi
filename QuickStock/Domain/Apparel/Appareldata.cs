@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using QuickStock.Domain.Locations;
 using System.ComponentModel.DataAnnotations.Schema;
-using QuickStock.Domain.ITassets;
 
 namespace QuickStock.Domain.Apparel
 {
@@ -40,6 +40,9 @@ namespace QuickStock.Domain.Apparel
 
         [MaxLength(500)]
         public string? Remarks { get; set; }
+
+        [MaxLength(100)]
+        public string? Location { get; set; }
 
         [Required]
         public int CampusId { get; set; }

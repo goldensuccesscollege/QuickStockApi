@@ -31,7 +31,7 @@ namespace QuickStock.Applications.Accounts.Handler
             var user = await _db.Accounts
                 .Include(a => a.AccountCampuses)
                 .FirstOrDefaultAsync(
-                    x => x.Username == request.Username,
+                    x => x.Username == request.Username || x.Email == request.Username,
                     cancellationToken);
 
             // ❌ Wrong credentials
@@ -72,6 +72,14 @@ namespace QuickStock.Applications.Accounts.Handler
                 claimList.Add(new Claim("CampusId", ac.CampusId.ToString()));
             }
 
+            // Permission Claims
+            claimList.Add(new Claim("CanAccessITAssets", user.CanAccessITAssets.ToString()));
+            claimList.Add(new Claim("CanAccessApparel", user.CanAccessApparel.ToString()));
+            claimList.Add(new Claim("CanAccessMessages", user.CanAccessMessages.ToString()));
+            claimList.Add(new Claim("CanAccessLibrary", user.CanAccessLibrary.ToString()));
+            claimList.Add(new Claim("CanAccessHomeEconomics", user.CanAccessHomeEconomics.ToString()));
+            claimList.Add(new Claim("CanAccessConsumables", user.CanAccessConsumables.ToString()));
+
             var key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(
                     _config["Jwt:Key"]
@@ -90,14 +98,19 @@ namespace QuickStock.Applications.Accounts.Handler
 
             return new LoginResponse
             {
+                Id = user.Id,
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
                 Email = user.Email,
                 Role = user.Role,
                 CampusIds = activeCampuses.Select(ac => ac.CampusId).ToList(),
                 CanAccessITAssets = user.CanAccessITAssets,
                 CanAccessApparel = user.CanAccessApparel,
-                CanAccessMessages = user.CanAccessMessages
+                CanAccessMessages = user.CanAccessMessages,
+                CanAccessLibrary = user.CanAccessLibrary,
+                CanAccessHomeEconomics = user.CanAccessHomeEconomics,
+                CanAccessConsumables = user.CanAccessConsumables
             };
+
         }
     }
 }

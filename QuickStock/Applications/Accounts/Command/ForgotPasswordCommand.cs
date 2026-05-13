@@ -1,11 +1,13 @@
-﻿using MediatR;
+using MediatR;
 
 
 namespace QuickStock.Applications.Accounts.Command
 {
     public class ForgotPasswordCommand : IRequest<string>
     {
-       public string Email { get; }
+        public string Email { get; set; } = string.Empty;
+
+        public ForgotPasswordCommand() { }
 
         public ForgotPasswordCommand(string email)
         {

@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QuickStock.Applications.Accounts.Command;
@@ -50,20 +50,18 @@ namespace QuickStock.Controllers
             if (claim == null)
                 throw new UnauthorizedAccessException("Invalid token");
 
-            return int.Parse(claim); // ✅ no FormatException now
+            return int.Parse(claim); // ? no FormatException now
         }
 
         
         // Forgot Password
         [HttpPost("forgot-password")]
-        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPass dto)
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordCommand command)
         {
             try
             {
-                var token = await _authService.GenerateForgotPasswordTokenAsync(dto.Email);
-
-                // TODO: Send email with link: /reset-password?email=...&token=...
-                return Ok(new { message = "Password reset link sent to email.", token });
+                var result = await _mediator.Send(command);
+                return Ok(new { message = result });
             }
             catch (Exception ex)
             {
@@ -73,12 +71,15 @@ namespace QuickStock.Controllers
 
         // Reset Password
         [HttpPost("reset-password")]
-        public async Task<IActionResult> ResetPassword([FromBody] ResetPass request)
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand command)
         {
             try
             {
-                await _authService.ResetPasswordAsync(request);
-                return Ok(new { message = "Password has been reset successfully." });
+                var result = await _mediator.Send(command);
+                if (result == "Password reset successful.")
+                    return Ok(new { message = result });
+                
+                return BadRequest(new { message = result });
             }
             catch (Exception ex)
             {

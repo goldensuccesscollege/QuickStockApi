@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using QuickStock.Applications.Accounts.Command;
 using QuickStock.Infrastructure.Data;
@@ -24,18 +24,18 @@ namespace QuickStock.Applications.Accounts.Handler
                     x.ResetToken == request.Token,
                     cancellationToken);
 
-            // ❌ Token not found
+            // ? Token not found
             if (account == null)
                 return "Invalid reset link.";
 
-            // ❌ Token expired
+            // ? Token expired
             if (account.ResetTokenExpires < DateTime.UtcNow)
                 return "Reset link has expired.";
 
-            // ✅ Hash new password
+            // ? Hash new password
             account.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
 
-            // ✅ Invalidate token (IMPORTANT)
+            // ? Invalidate token (IMPORTANT)
             account.ResetToken = null;
             account.ResetTokenExpires = null;
             account.PasswordReset = DateTime.UtcNow;

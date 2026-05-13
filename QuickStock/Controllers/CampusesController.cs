@@ -1,67 +1,69 @@
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using QuickStock.Applications.Campuses.Command;
+using QuickStock.Applications.Campuses.Queries;
 using QuickStock.Domain.ITassets;
-using QuickStock.Infrastructure.Data;
+using QuickStock.Domain.Messaging;
+using QuickStock.Domain.Social;
+using QuickStock.Domain.Locations;
+using QuickStock.Domain.Shared;
+using QuickStock.Domain.Accounts;
+using QuickStock.Domain.Messaging;
+using QuickStock.Domain.Social;
+using QuickStock.Domain.Locations;
+using QuickStock.Domain.Shared;
 
 namespace QuickStock.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Microsoft.AspNetCore.Authorization.Authorize]
+    [Authorize]
     public class CampusesController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IMediator _mediator;
 
-        public CampusesController(AppDbContext context)
-        {
-            _context = context;
-        }
+        public CampusesController(IMediator mediator) => _mediator = mediator;
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Campus>>> GetCampuses()
         {
-            return await _context.Campuses.ToListAsync();
+            var result = await _mediator.Send(new GetCampusesQuery());
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Campus>> GetCampus(int id)
         {
-            var campus = await _context.Campuses.FindAsync(id);
+            var campus = await _mediator.Send(new GetCampusByIdQuery(id));
             if (campus == null) return NotFound();
-            return campus;
+            return Ok(campus);
         }
 
         [HttpPost]
-        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Campus>> CreateCampus(Campus campus)
         {
-            _context.Campuses.Add(campus);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetCampus), new { id = campus.CampusId }, campus);
+            var result = await _mediator.Send(new CreateCampusCommand(campus));
+            return CreatedAtAction(nameof(GetCampus), new { id = result.CampusId }, result);
         }
 
         [HttpPut("{id}")]
-        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateCampus(int id, Campus campus)
         {
             if (id != campus.CampusId) return BadRequest();
-            _context.Entry(campus).State = EntityState.Modified;
-            try { await _context.SaveChangesAsync(); }
-            catch (DbUpdateConcurrencyException) { if (!CampusExists(id)) return NotFound(); else throw; }
+            await _mediator.Send(new UpdateCampusCommand(id, campus));
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteCampus(int id)
         {
-            var campus = await _context.Campuses.FindAsync(id);
-            if (campus == null) return NotFound();
-            _context.Campuses.Remove(campus);
-            await _context.SaveChangesAsync();
+            var success = await _mediator.Send(new DeleteCampusCommand(id));
+            if (!success) return NotFound();
             return NoContent();
         }
-
-        private bool CampusExists(int id) => _context.Campuses.Any(e => e.CampusId == id);
     }
 }

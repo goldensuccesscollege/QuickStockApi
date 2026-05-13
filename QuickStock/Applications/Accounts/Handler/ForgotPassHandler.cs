@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using QuickStock.Applications.Accounts.Command;
@@ -37,7 +37,7 @@ namespace QuickStock.Applications.Accounts.Handler
             account.ResetTokenExpires = DateTime.UtcNow.AddHours(1); // valid for 1 hour
             account.Updated = DateTime.UtcNow;
 
-            await _db.SaveChangesAsync(cancellationToken); // ✅ token saved here
+            await _db.SaveChangesAsync(cancellationToken); // ? token saved here
 
             // Build the one-time use link
             string resetLink = $"https://localhost:7058/Account/ResetPassword?email={Uri.EscapeDataString(account.Email)}&token={Uri.EscapeDataString(token)}";

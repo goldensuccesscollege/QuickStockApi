@@ -1,8 +1,14 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using QuickStock.Infrastructure.Data;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using QuickStock.Applications.Rooms.Command;
+using QuickStock.Applications.Rooms.Queries;
 using QuickStock.Domain.ITassets;
+using QuickStock.Domain.Messaging;
+using QuickStock.Domain.Social;
+using QuickStock.Domain.Locations;
+using QuickStock.Domain.Shared;
+using QuickStock.Domain.Accounts;
 
 namespace QuickStock.Controllers
 {
@@ -11,158 +17,69 @@ namespace QuickStock.Controllers
     [Authorize]
     public class RoomsController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IMediator _mediator;
 
-        public RoomsController(AppDbContext context)
-        {
-            _context = context;
-        }
-
-        private async Task LogAction(string action, int entityId, string entityName, string details, int campusId)
-        {
-            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-            var username = User.Identity?.Name;
-            
-            var log = new AuditLog
-            {
-                Action = action,
-                EntityType = "Room",
-                EntityId = entityId,
-                EntityName = entityName,
-                Details = details,
-                UserId = userId,
-                Username = username,
-                CampusId = campusId
-            };
-            _context.AuditLogs.Add(log);
-            await _context.SaveChangesAsync();
-        }
+        public RoomsController(IMediator mediator) => _mediator = mediator;
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Room>>> GetRooms(int? campusId = null)
         {
-            IQueryable<Room> query = _context.Rooms;
-            
-            // If user is not Admin, hide disabled rooms
-            if (!User.IsInRole("Admin"))
-            {
-                query = query.Where(r => !r.IsDisabled);
-            }
-
-            if (campusId.HasValue && campusId.Value > 0)
-            {
-                query = query.Where(r => r.CampusId == campusId.Value);
-            }
-            return await query.ToListAsync();
+            var result = await _mediator.Send(new GetRoomsQuery(campusId, User));
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Room>> GetRoom(int id)
         {
-            var room = await _context.Rooms.FindAsync(id);
+            var room = await _mediator.Send(new GetRoomByIdQuery(id, User));
             if (room == null) return NotFound();
-            
-            if (room.IsDisabled && !User.IsInRole("Admin"))
-            {
-                return Forbid();
-            }
-
-            return room;
+            return Ok(room);
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin,Library Admin,Home Economics Admin,Manager,User")]
         public async Task<ActionResult<Room>> CreateRoom(Room room)
         {
-            var campus = await _context.Campuses.FindAsync(room.CampusId);
-            if (campus == null) return BadRequest("Campus not found.");
-
-            if (string.Equals(room.RoomName.Trim(), campus.Name.Trim(), StringComparison.OrdinalIgnoreCase))
+            try
             {
-                return BadRequest("Room name cannot be the same as the campus name.");
+                var result = await _mediator.Send(new CreateRoomCommand(room, User));
+                return CreatedAtAction(nameof(GetRoom), new { id = result.RoomId }, result);
             }
-
-            var roomExists = await _context.Rooms.AnyAsync(r => 
-                r.CampusId == room.CampusId && 
-                r.RoomName.ToLower() == room.RoomName.ToLower());
-
-            if (roomExists)
-            {
-                return BadRequest("A room with this name already exists in this campus.");
-            }
-
-            _context.Rooms.Add(room);
-            await _context.SaveChangesAsync();
-
-            await LogAction("Add", room.RoomId, room.RoomName, $"Created room: {room.RoomName} on {room.RoomFloor}", room.CampusId);
-
-            return CreatedAtAction(nameof(GetRoom), new { id = room.RoomId }, room);
+            catch (InvalidOperationException ex) { return BadRequest(ex.Message); }
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin,Library Admin,Home Economics Admin,Manager")]
         public async Task<IActionResult> UpdateRoom(int id, Room room)
         {
             if (id != room.RoomId) return BadRequest();
-
-            var campus = await _context.Campuses.FindAsync(room.CampusId);
-            if (campus == null) return BadRequest("Campus not found.");
-
-            if (string.Equals(room.RoomName.Trim(), campus.Name.Trim(), StringComparison.OrdinalIgnoreCase))
+            try
             {
-                return BadRequest("Room name cannot be the same as the campus name.");
+                await _mediator.Send(new UpdateRoomCommand(id, room, User));
+                return NoContent();
             }
-
-            var roomExists = await _context.Rooms.AnyAsync(r => 
-                r.CampusId == room.CampusId && 
-                r.RoomName.ToLower() == room.RoomName.ToLower() &&
-                r.RoomId != id);
-
-            if (roomExists)
-            {
-                return BadRequest("A room with this name already exists in this campus.");
-            }
-
-            _context.Entry(room).State = EntityState.Modified;
-            try { 
-                await _context.SaveChangesAsync(); 
-                await LogAction("Update", room.RoomId, room.RoomName, $"Updated room details", room.CampusId);
-            }
-            catch (DbUpdateConcurrencyException) { if (!RoomExists(id)) return NotFound(); else throw; }
-            return NoContent();
+            catch (InvalidOperationException ex) { return BadRequest(ex.Message); }
         }
 
         [HttpPut("{id}/toggle-status")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Library Admin,Home Economics Admin")]
         public async Task<IActionResult> ToggleStatus(int id)
         {
-            var room = await _context.Rooms.FindAsync(id);
-            if (room == null) return NotFound();
-
-            room.IsDisabled = !room.IsDisabled;
-            await _context.SaveChangesAsync();
-
-            await LogAction("ToggleStatus", room.RoomId, room.RoomName, $"Room status changed to {(room.IsDisabled ? "Disabled" : "Enabled")}", room.CampusId);
-
-            return Ok(new { isDisabled = room.IsDisabled });
+            try
+            {
+                var result = await _mediator.Send(new ToggleRoomStatusCommand(id, User));
+                return Ok(result);
+            }
+            catch (KeyNotFoundException) { return NotFound(); }
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Library Admin,Home Economics Admin")]
         public async Task<IActionResult> DeleteRoom(int id)
         {
-            var room = await _context.Rooms.FindAsync(id);
-            if (room == null) return NotFound();
-            
-            var roomName = room.RoomName;
-            var campusId = room.CampusId;
-
-            _context.Rooms.Remove(room);
-            await _context.SaveChangesAsync();
-
-            await LogAction("Delete", id, roomName, $"Deleted room: {roomName}", campusId);
-
+            var success = await _mediator.Send(new DeleteRoomCommand(id, User));
+            if (!success) return NotFound();
             return NoContent();
         }
-
-        private bool RoomExists(int id) => _context.Rooms.Any(e => e.RoomId == id);
     }
 }

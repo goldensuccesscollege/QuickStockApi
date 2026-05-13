@@ -1,4 +1,4 @@
-﻿namespace QuickStock.Infrastructure
+namespace QuickStock.Infrastructure
 {
     public class DependencyInjection
     {
