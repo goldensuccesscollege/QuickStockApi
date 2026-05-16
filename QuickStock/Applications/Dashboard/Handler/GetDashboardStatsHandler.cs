@@ -136,9 +136,9 @@ namespace QuickStock.Applications.Dashboard.Handler
                 }).ToList();
 
                 // Consumables
-                dto.TotalConsumableTypes = await _context.ConsumableData.CountAsync(c => c.CampusId == campusId, cancellationToken);
+                dto.TotalConsumableTypes = await _context.ConsumableList.CountAsync(c => c.CampusId == campusId, cancellationToken);
                 
-                var consumableStats = await _context.ConsumableData
+                var consumableStats = await _context.ConsumableList
                     .Where(c => c.CampusId == campusId)
                     .Select(c => new { c.In, c.Out })
                     .ToListAsync(cancellationToken);

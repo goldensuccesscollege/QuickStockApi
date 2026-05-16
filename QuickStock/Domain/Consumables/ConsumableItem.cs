@@ -17,7 +17,11 @@ namespace QuickStock.Domain.Consumables
 
         public int ConsumableDataId { get; set; }
         
+        public string? AddedByUserId { get; set; }
+        public string? AddedByUsername { get; set; }
+
         [ForeignKey("ConsumableDataId")]
+        [System.Text.Json.Serialization.JsonIgnore]
         public ConsumableData ConsumableData { get; set; } = null!;
     }
 }

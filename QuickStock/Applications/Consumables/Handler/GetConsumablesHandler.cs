@@ -19,7 +19,7 @@ namespace QuickStock.Applications.Consumables.Handler
 
         public async Task<ConsumableListResponse> Handle(GetConsumablesQuery request, CancellationToken cancellationToken)
         {
-            var query = _context.ConsumableData.AsQueryable();
+            var query = _context.ConsumableList.AsQueryable();
 
             if (request.CampusId.HasValue)
             {
@@ -30,6 +30,16 @@ namespace QuickStock.Applications.Consumables.Handler
             {
                 var search = request.SearchTerm.ToLower();
                 query = query.Where(c => c.Product.ToLower().Contains(search) || (c.Description != null && c.Description.ToLower().Contains(search)));
+            }
+
+            // Filter by stock status
+            if (request.ShowOutOnly)
+            {
+                query = query.Where(c => (c.In - c.Out) <= 0);
+            }
+            else
+            {
+                query = query.Where(c => (c.In - c.Out) > 0);
             }
 
             var total = await query.CountAsync(cancellationToken);
