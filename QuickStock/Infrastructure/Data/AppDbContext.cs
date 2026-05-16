@@ -39,8 +39,9 @@ namespace QuickStock.Infrastructure.Data
         public DbSet<Librarydata> LibraryBooks { get; set; }
         public DbSet<LibraryBookItem> LibraryBookItems { get; set; }
         public DbSet<Furniture> Furnitures { get; set; }
-        public DbSet<ConsumableData> ConsumableData { get; set; }
+        public DbSet<ConsumableData> ConsumableList { get; set; }
         public DbSet<ConsumableItem> ConsumableItems { get; set; }
+        public DbSet<ConsumableOutRequest> ConsumableOutRequests { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -49,8 +50,9 @@ namespace QuickStock.Infrastructure.Data
 
             // ... (Existing HasData and existing relations)
 
-            // ConsumableData -> Campus
+            // ConsumableList -> Campus
             modelBuilder.Entity<QuickStock.Domain.Consumables.ConsumableData>()
+                .ToTable("ConsumableList")
                 .HasOne<Campus>()
                 .WithMany()
                 .HasForeignKey(c => c.CampusId)
@@ -61,6 +63,13 @@ namespace QuickStock.Infrastructure.Data
                 .HasOne(i => i.ConsumableData)
                 .WithMany(d => d.Items)
                 .HasForeignKey(i => i.ConsumableDataId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // ConsumableOutRequest -> ConsumableItem
+            modelBuilder.Entity<QuickStock.Domain.Consumables.ConsumableOutRequest>()
+                .HasOne(r => r.ConsumableItem)
+                .WithMany()
+                .HasForeignKey(r => r.ConsumableItemId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Campus>().HasData(

@@ -27,10 +27,15 @@ namespace QuickStock.Applications.Consumables.Handler
             using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
             try
             {
-                _context.ConsumableData.Add(consumable);
+                _context.ConsumableList.Add(consumable);
                 await _context.SaveChangesAsync(cancellationToken);
 
                 // Automatically generate individual items based on 'In' quantity
+                var userId = request.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var accountId = int.TryParse(userId, out int aid) ? aid : 0;
+                var profile = await _context.Profiles.FirstOrDefaultAsync(p => p.AccountId == accountId, cancellationToken);
+                var stockerName = profile != null ? profile.FirstName : request.User.Identity?.Name;
+
                 var items = new List<ConsumableItem>();
                 for (int i = 1; i <= consumable.In; i++)
                 {
@@ -38,7 +43,9 @@ namespace QuickStock.Applications.Consumables.Handler
                     {
                         ConsumableData = consumable,
                         ItemCode = $"{consumable.Product.Substring(0, Math.Min(3, consumable.Product.Length)).ToUpper()}-{Guid.NewGuid().ToString("N").Substring(0, 6).ToUpper()}-{i:D3}",
-                        Status = "In Stock"
+                        Status = "In Stock",
+                        AddedByUserId = userId,
+                        AddedByUsername = stockerName
                     });
                 }
                 _context.ConsumableItems.AddRange(items);
