@@ -1,14 +1,16 @@
 using Microsoft.EntityFrameworkCore;
-using QuickStock.Domain.ITassets;
-using QuickStock.Domain.Messaging;
-using QuickStock.Domain.Social;
-using QuickStock.Domain.Locations;
-using QuickStock.Domain.Shared;
 using QuickStock.Domain.Accounts;
 using QuickStock.Domain.Apparel;
-using QuickStock.Domain.Library;
+using QuickStock.Domain.Consumable;
 using QuickStock.Domain.Furniture;
-using QuickStock.Domain.Consumables;
+using QuickStock.Domain.ITassets;
+using QuickStock.Domain.Library;
+using QuickStock.Domain.Locations;
+using QuickStock.Domain.Shared;
+using QuickStock.Domain.Social;
+
+// NOTE: Accounts, Shared, Locations, and ITassets have been removed from the 
+// top imports because they are already declared globally in your project.
 
 namespace QuickStock.Infrastructure.Data
 {
@@ -21,13 +23,6 @@ namespace QuickStock.Infrastructure.Data
 
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Profile> Profiles { get; set; }
-        public DbSet<ChatMessage> ChatMessages { get; set; }
-        public DbSet<ChatGroup> ChatGroups { get; set; }
-        public DbSet<ChatGroupMember> ChatGroupMembers { get; set; }
-        public DbSet<ProfilePost> ProfilePosts { get; set; }
-        public DbSet<PostImage> PostImages { get; set; }
-        public DbSet<PostComment> PostComments { get; set; }
-        public DbSet<PostReaction> PostReactions { get; set; }
         public DbSet<ItAsset> Itassets { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Campus> Campuses { get; set; }
@@ -39,49 +34,28 @@ namespace QuickStock.Infrastructure.Data
         public DbSet<Librarydata> LibraryBooks { get; set; }
         public DbSet<LibraryBookItem> LibraryBookItems { get; set; }
         public DbSet<Furniture> Furnitures { get; set; }
-        public DbSet<ConsumableData> ConsumableList { get; set; }
-        public DbSet<ConsumableItem> ConsumableItems { get; set; }
-        public DbSet<ConsumableOutRequest> ConsumableOutRequests { get; set; }
-
+        public DbSet<ConsumableUnit> ConsumableUnits { get; set; }
+        public DbSet<ConsumableRequest> ConsumableRequests { get; set; }
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // ... (Existing HasData and existing relations)
-
-            // ConsumableList -> Campus
-            modelBuilder.Entity<QuickStock.Domain.Consumables.ConsumableData>()
-                .ToTable("ConsumableList")
-                .HasOne<Campus>()
-                .WithMany()
-                .HasForeignKey(c => c.CampusId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            // ConsumableItem -> ConsumableData
-            modelBuilder.Entity<QuickStock.Domain.Consumables.ConsumableItem>()
-                .HasOne(i => i.ConsumableData)
-                .WithMany(d => d.Items)
-                .HasForeignKey(i => i.ConsumableDataId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            // ConsumableOutRequest -> ConsumableItem
-            modelBuilder.Entity<QuickStock.Domain.Consumables.ConsumableOutRequest>()
-                .HasOne(r => r.ConsumableItem)
-                .WithMany()
-                .HasForeignKey(r => r.ConsumableItemId)
-                .OnDelete(DeleteBehavior.Cascade);
+            // ======================================================
+            // Seed Data Configuration
+            // ======================================================
 
             modelBuilder.Entity<Campus>().HasData(
-                new Campus { CampusId = 1, Name = "Cebu Campus", Address = "Cebu City", Description = "Main Campus" },
-                new Campus { CampusId = 2, Name = "Manila Campus", Address = "Metro Manila", Description = "Luzon Branch" }
+                new Campus { CampusId = 1, Name = "GSC-Cebu", Address = "Cebu City", Description = "Main Campus" },
+                new Campus { CampusId = 2, Name = "GSC-Manila", Address = "Metro Manila", Description = "Luzon Branch" }
             );
 
-            modelBuilder.Entity<Room>().HasData(
-                new Room { RoomId = 1, CampusId = 1, RoomName = "Room 403", RoomFloor = "4th Floor", RoomDescription = "General IT Office" },
-                new Room { RoomId = 2, CampusId = 1, RoomName = "IT Lab", RoomFloor = "2nd Floor", RoomDescription = "Hardware Testing and Maintenance" },
-                new Room { RoomId = 3, CampusId = 1, RoomName = "Server Room 1", RoomFloor = "Basement", RoomDescription = "Critical Infrastructure" }
-            );
+           
+
+            // ======================================================
+            // Account & Security Relationships
+            // ======================================================
 
             modelBuilder.Entity<AccountCampus>()
                 .HasOne(ac => ac.Account)
@@ -93,63 +67,14 @@ namespace QuickStock.Infrastructure.Data
                 .WithMany()
                 .HasForeignKey(ac => ac.CampusId);
 
-            modelBuilder.Entity<ProfilePost>()
-                .HasMany(p => p.Images)
-                .WithOne(i => i.Post)
-                .HasForeignKey(i => i.PostId)
-                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Account>()
                 .HasOne(a => a.Profile)
                 .WithOne(p => p.Account)
                 .HasForeignKey<Profile>(p => p.AccountId);
 
-            modelBuilder.Entity<ChatMessage>()
-                .HasOne(m => m.Sender)
-                .WithMany()
-                .HasForeignKey(m => m.SenderAccountId);
-
-            modelBuilder.Entity<ChatGroup>()
-                .HasOne(g => g.CreatedBy)
-                .WithMany()
-                .HasForeignKey(g => g.CreatedByAccountId);
-
-            modelBuilder.Entity<ChatGroupMember>()
-                .HasOne(gm => gm.Group)
-                .WithMany(g => g.Members)
-                .HasForeignKey(gm => gm.ChatGroupId);
-
-            modelBuilder.Entity<ChatGroupMember>()
-                .HasOne(gm => gm.Account)
-                .WithMany()
-                .HasForeignKey(gm => gm.AccountId);
-
-            modelBuilder.Entity<PostComment>(entity =>
-            {
-                entity.HasOne(c => c.Post)
-                    .WithMany(p => p.Comments)
-                    .HasForeignKey(c => c.PostId)
-                    .OnDelete(DeleteBehavior.Cascade);
-
-                entity.HasOne(c => c.Author)
-                    .WithMany()
-                    .HasForeignKey(c => c.AuthorAccountId)
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
-
-            modelBuilder.Entity<PostReaction>(entity =>
-            {
-                entity.HasOne(r => r.Post)
-                    .WithMany(p => p.Reactions)
-                    .HasForeignKey(r => r.PostId)
-                    .OnDelete(DeleteBehavior.Cascade);
-
-                entity.HasOne(r => r.Author)
-                    .WithMany()
-                    .HasForeignKey(r => r.AuthorAccountId)
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
-
-            // --- Database Relations Integrity ---
+            // ======================================================
+            // Database Relations Integrity (Cascades & Restrictions)
+            // ======================================================
 
             // Room -> Campus (Restrict deletion if rooms exist)
             modelBuilder.Entity<Room>()
@@ -179,17 +104,18 @@ namespace QuickStock.Infrastructure.Data
                 .HasForeignKey(ap => ap.CampusId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Librarydata -> Campus (Restrict deletion if books exist)
+            // Librarydata Base Key Mapping
             modelBuilder.Entity<Librarydata>()
                 .HasKey(l => l.ItemId);
 
+            // Librarydata -> Campus (Restrict deletion if books exist)
             modelBuilder.Entity<Librarydata>()
                 .HasOne(l => l.Campus)
                 .WithMany()
                 .HasForeignKey(l => l.CampusId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // LibraryBookItem -> Librarydata
+            // LibraryBookItem -> Librarydata (Delete copies automatically if parent record is dropped)
             modelBuilder.Entity<LibraryBookItem>()
                 .HasOne(i => i.Book)
                 .WithMany(b => b.Items)
@@ -217,8 +143,19 @@ namespace QuickStock.Infrastructure.Data
                 .HasForeignKey(f => f.RoomId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            base.OnModelCreating(modelBuilder);
+            // ======================================================
+            // Consumable Inventory Configurations
+            // ======================================================
 
+            // LABEL: Explicitly configure ConsumableUnit Auto-Increment Sequence 
+            modelBuilder.Entity<ConsumableUnit>(entity =>
+            {
+                entity.ToTable("ConsumableUnit");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id)
+                      .HasColumnName("ID")
+                      .ValueGeneratedOnAdd(); // Forces DB-level identity tracking (1, 2, 3...)
+            });
         }
     }
 }

@@ -1,4 +1,4 @@
-using MediatR;
+using QuickStock.CQRS;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuickStock.Applications.Library.Command;
@@ -32,7 +32,7 @@ namespace QuickStock.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin,Library Admin,Home Economics Admin,Manager,User")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         public async Task<ActionResult<Librarydata>> Create(Librarydata book)
         {
             var result = await _mediator.Send(new CreateLibraryBookCommand(book, User));
@@ -40,7 +40,7 @@ namespace QuickStock.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin,Library Admin,Home Economics Admin,Manager")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> Update(int id, Librarydata book)
         {
             if (id != book.ItemId) return BadRequest();
@@ -52,7 +52,7 @@ namespace QuickStock.Controllers
         // --- Item Management ---
 
         [HttpPost("{bookId}/items")]
-        [Authorize(Roles = "Admin,Library Admin,Home Economics Admin,Manager,User")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         public async Task<ActionResult<LibraryBookItem>> AddItem(int bookId, LibraryBookItem item)
         {
             var result = await _mediator.Send(new AddLibraryBookItemCommand(bookId, item, User));
@@ -60,7 +60,7 @@ namespace QuickStock.Controllers
         }
 
         [HttpPut("items/{itemId}")]
-        [Authorize(Roles = "Admin,Library Admin,Home Economics Admin,Manager")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> UpdateItem(int itemId, LibraryBookItem item)
         {
             var success = await _mediator.Send(new UpdateLibraryBookItemCommand(itemId, item, User));
@@ -69,7 +69,7 @@ namespace QuickStock.Controllers
         }
 
         [HttpDelete("items/{itemId}")]
-        [Authorize(Roles = "Admin,Library Admin,Home Economics Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteItem(int itemId)
         {
             var success = await _mediator.Send(new DeleteLibraryBookItemCommand(itemId, User));

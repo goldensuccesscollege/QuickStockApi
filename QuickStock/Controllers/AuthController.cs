@@ -1,4 +1,4 @@
-using MediatR;
+using QuickStock.CQRS;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QuickStock.Applications.Accounts.Command;

@@ -2,9 +2,8 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using QuickStock.Domain.Locations;
 using QuickStock.Domain.Shared;
-using QuickStock.Domain.Messaging;
-using QuickStock.Domain.Social;
 using QuickStock.Domain.ITassets;
+using QuickStock.Domain.Social;
 
 namespace QuickStock.Domain.Accounts
 {
@@ -23,8 +22,7 @@ namespace QuickStock.Domain.Accounts
         [MaxLength(255)]
         public string PasswordHash { get; set; } = string.Empty;
 
-
-        // tinyint(1) in MySQL → bool in EF Core
+        // tinyint(1) in MySQL â†’ bool in EF Core
         public bool AcceptTerms { get; set; }
 
         [MaxLength(255)]
@@ -51,9 +49,8 @@ namespace QuickStock.Domain.Accounts
 
         public bool CanAccessITAssets { get; set; } = true;
         public bool CanAccessApparel { get; set; } = true;
-        public bool CanAccessMessages { get; set; } = true;
         public bool CanAccessLibrary { get; set; } = true;
-        public bool CanAccessHomeEconomics { get; set; } = true;
+        public bool CanAccessFurniture { get; set; } = true;
         public bool CanAccessConsumables { get; set; } = true;
 
         public virtual ICollection<AccountCampus> AccountCampuses { get; set; } = new List<AccountCampus>();

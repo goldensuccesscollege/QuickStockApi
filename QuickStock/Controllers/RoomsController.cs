@@ -1,11 +1,9 @@
-using MediatR;
+using QuickStock.CQRS;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuickStock.Applications.Rooms.Command;
 using QuickStock.Applications.Rooms.Queries;
 using QuickStock.Domain.ITassets;
-using QuickStock.Domain.Messaging;
-using QuickStock.Domain.Social;
 using QuickStock.Domain.Locations;
 using QuickStock.Domain.Shared;
 using QuickStock.Domain.Accounts;
@@ -37,7 +35,7 @@ namespace QuickStock.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin,Library Admin,Home Economics Admin,Manager,User")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         public async Task<ActionResult<Room>> CreateRoom(Room room)
         {
             try
@@ -49,7 +47,7 @@ namespace QuickStock.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin,Library Admin,Home Economics Admin,Manager")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> UpdateRoom(int id, Room room)
         {
             if (id != room.RoomId) return BadRequest();
@@ -62,7 +60,7 @@ namespace QuickStock.Controllers
         }
 
         [HttpPut("{id}/toggle-status")]
-        [Authorize(Roles = "Admin,Library Admin,Home Economics Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ToggleStatus(int id)
         {
             try
@@ -74,7 +72,7 @@ namespace QuickStock.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin,Library Admin,Home Economics Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteRoom(int id)
         {
             var success = await _mediator.Send(new DeleteRoomCommand(id, User));

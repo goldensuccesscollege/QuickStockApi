@@ -1,4 +1,4 @@
-using MediatR;
+using QuickStock.CQRS;
 using QuickStock.Applications.Users.Command;
 using QuickStock.Infrastructure.Data;
 using System.Threading;

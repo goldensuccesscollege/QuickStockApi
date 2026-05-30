@@ -1,16 +1,10 @@
-using MediatR;
+using QuickStock.CQRS;
 using QuickStock.Applications.Itassets.Command;
 using QuickStock.Infrastructure.Data;
 using QuickStock.Domain.ITassets;
-using QuickStock.Domain.Messaging;
-using QuickStock.Domain.Social;
 using QuickStock.Domain.Locations;
 using QuickStock.Domain.Shared;
 using QuickStock.Domain.Accounts;
-using QuickStock.Domain.Messaging;
-using QuickStock.Domain.Social;
-using QuickStock.Domain.Locations;
-using QuickStock.Domain.Shared;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;

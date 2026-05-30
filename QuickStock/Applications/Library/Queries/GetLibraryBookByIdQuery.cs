@@ -1,10 +1,10 @@
-using MediatR;
+using QuickStock.CQRS;
 using QuickStock.Domain.Library;
 using System.Security.Claims;
 
 namespace QuickStock.Applications.Library.Queries
 {
-    public class GetLibraryBookByIdQuery : IRequest<Librarydata>
+    public class GetLibraryBookByIdQuery : IRequest<Librarydata?>
     {
         public int Id { get; set; }
         public ClaimsPrincipal User { get; set; }

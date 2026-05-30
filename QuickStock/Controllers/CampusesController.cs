@@ -1,18 +1,12 @@
-using MediatR;
+using QuickStock.CQRS;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuickStock.Applications.Campuses.Command;
 using QuickStock.Applications.Campuses.Queries;
 using QuickStock.Domain.ITassets;
-using QuickStock.Domain.Messaging;
-using QuickStock.Domain.Social;
 using QuickStock.Domain.Locations;
 using QuickStock.Domain.Shared;
 using QuickStock.Domain.Accounts;
-using QuickStock.Domain.Messaging;
-using QuickStock.Domain.Social;
-using QuickStock.Domain.Locations;
-using QuickStock.Domain.Shared;
 
 namespace QuickStock.Controllers
 {

@@ -1,4 +1,4 @@
-using MediatR;
+using QuickStock.CQRS;
 using Microsoft.EntityFrameworkCore;
 using QuickStock.Applications.Accounts.Command;
 using QuickStock.Applications.Accounts.Dto_s;
@@ -34,28 +34,28 @@ namespace QuickStock.Applications.Accounts.Handler
                     x => x.Username == request.Username || x.Email == request.Username,
                     cancellationToken);
 
-            // ❌ Wrong credentials
+            // âŒ Wrong credentials
             if (user == null)
                 throw new UnauthorizedException("Invalid username or password.");
 
-            // ❌ Not verified
+            // âŒ Not verified
             if (user.Verified == null)
                 throw new UnauthorizedException("Account not verified.");
 
-            // ❌ Inactive or Disabled
+            // âŒ Inactive or Disabled
             if (user.Status == "Inactive")
                 throw new UnauthorizedException("This account is inactive. Please contact support.");
 
             if (user.Status == "Disabled")
                 throw new UnauthorizedException("Your account was disabled.");
 
-            // ❌ Wrong password
+            // âŒ Wrong password
             if (!PasswordHelper.VerifyPassword(
                 request.Password,
                 user.PasswordHash))
                 throw new UnauthorizedException("Invalid username or password.");
 
-            // ✅ Claims
+            // âœ… Claims
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
@@ -75,9 +75,8 @@ namespace QuickStock.Applications.Accounts.Handler
             // Permission Claims
             claimList.Add(new Claim("CanAccessITAssets", user.CanAccessITAssets.ToString()));
             claimList.Add(new Claim("CanAccessApparel", user.CanAccessApparel.ToString()));
-            claimList.Add(new Claim("CanAccessMessages", user.CanAccessMessages.ToString()));
             claimList.Add(new Claim("CanAccessLibrary", user.CanAccessLibrary.ToString()));
-            claimList.Add(new Claim("CanAccessHomeEconomics", user.CanAccessHomeEconomics.ToString()));
+            claimList.Add(new Claim("CanAccessFurniture", user.CanAccessFurniture.ToString()));
             claimList.Add(new Claim("CanAccessConsumables", user.CanAccessConsumables.ToString()));
 
             var key = new SymmetricSecurityKey(
@@ -105,9 +104,8 @@ namespace QuickStock.Applications.Accounts.Handler
                 CampusIds = activeCampuses.Select(ac => ac.CampusId).ToList(),
                 CanAccessITAssets = user.CanAccessITAssets,
                 CanAccessApparel = user.CanAccessApparel,
-                CanAccessMessages = user.CanAccessMessages,
                 CanAccessLibrary = user.CanAccessLibrary,
-                CanAccessHomeEconomics = user.CanAccessHomeEconomics,
+                CanAccessFurniture = user.CanAccessFurniture,
                 CanAccessConsumables = user.CanAccessConsumables
             };
 

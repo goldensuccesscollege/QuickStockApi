@@ -1,4 +1,4 @@
-using MediatR;
+using QuickStock.CQRS;
 using QuickStock.Domain.Furniture;
 
 namespace QuickStock.Applications.Furniture.Queries

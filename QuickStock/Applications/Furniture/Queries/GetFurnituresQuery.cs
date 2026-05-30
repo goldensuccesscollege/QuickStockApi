@@ -1,4 +1,4 @@
-using MediatR;
+using QuickStock.CQRS;
 using QuickStock.Domain.Furniture;
 using System.Collections.Generic;
 using System.Security.Claims;

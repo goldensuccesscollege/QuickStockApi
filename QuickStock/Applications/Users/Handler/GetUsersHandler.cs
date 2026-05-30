@@ -1,4 +1,4 @@
-using MediatR;
+using QuickStock.CQRS;
 using Microsoft.EntityFrameworkCore;
 using QuickStock.Applications.Users.Queries;
 using QuickStock.Infrastructure.Data;
@@ -32,9 +32,8 @@ namespace QuickStock.Applications.Users.Handler
                     LastName = a.Profile != null ? a.Profile.LastName : "",
                     a.CanAccessITAssets,
                     a.CanAccessApparel,
-                    a.CanAccessMessages,
                     a.CanAccessLibrary,
-                    a.CanAccessHomeEconomics,
+                    a.CanAccessFurniture,
                     a.CanAccessConsumables,
                     Campuses = a.AccountCampuses.Select(ac => new
                     {
