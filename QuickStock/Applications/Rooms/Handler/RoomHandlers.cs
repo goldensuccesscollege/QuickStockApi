@@ -1,11 +1,9 @@
-using MediatR;
+using QuickStock.CQRS;
 using Microsoft.EntityFrameworkCore;
 using QuickStock.Applications.Rooms.Command;
 using QuickStock.Applications.Rooms.Queries;
 using QuickStock.Infrastructure.Data;
 using QuickStock.Domain.ITassets;
-using QuickStock.Domain.Messaging;
-using QuickStock.Domain.Social;
 using QuickStock.Domain.Locations;
 using QuickStock.Domain.Shared;
 using System;

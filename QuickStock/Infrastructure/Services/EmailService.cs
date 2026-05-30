@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Options;
-using MimeKit;
-using MailKit.Net.Smtp;
+using System.Net;
+using System.Net.Mail;
 using QuickStock.Infrastructure.Config;
 using System.Threading.Tasks;
 
@@ -18,24 +18,17 @@ namespace QuickStock.Infrastructure.Services
         // Generic email sender
         public async Task SendEmailAsync(string to, string subject, string body, bool isHtml = false)
         {
-            var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("QuickStock", _settings.SmtpUser));
-            message.To.Add(new MailboxAddress("", to));
+            using var message = new MailMessage();
+            message.From = new MailAddress(_settings.SmtpUser, "QuickStock");
+            message.To.Add(new MailAddress(to));
             message.Subject = subject;
+            message.Body = body;
+            message.IsBodyHtml = isHtml;
 
-            var builder = new BodyBuilder
-            {
-                HtmlBody = isHtml ? body : null,
-                TextBody = isHtml ? null : body
-            };
-
-            message.Body = builder.ToMessageBody();
-
-            using var client = new SmtpClient();
-            await client.ConnectAsync(_settings.SmtpServer, _settings.SmtpPort, false);
-            await client.AuthenticateAsync(_settings.SmtpUser, _settings.SmtpPass);
-            await client.SendAsync(message);
-            await client.DisconnectAsync(true);
+            using var client = new SmtpClient(_settings.SmtpServer, _settings.SmtpPort);
+            client.Credentials = new NetworkCredential(_settings.SmtpUser, _settings.SmtpPass);
+            client.EnableSsl = true; // SmtpClient expects EnableSsl for port 587
+            await client.SendMailAsync(message);
         }
 
         // Password reset email

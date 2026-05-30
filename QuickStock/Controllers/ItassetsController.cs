@@ -1,11 +1,9 @@
-using MediatR;
+using QuickStock.CQRS;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuickStock.Applications.Itassets.Command;
 using QuickStock.Applications.Itassets.Queries;
 using QuickStock.Domain.ITassets;
-using QuickStock.Domain.Messaging;
-using QuickStock.Domain.Social;
 using QuickStock.Domain.Locations;
 using QuickStock.Domain.Shared;
 using QuickStock.Domain.Accounts;
@@ -49,7 +47,7 @@ namespace QuickStock.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin,Library Admin,Home Economics Admin,Manager,User")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         public async Task<IActionResult> Create(ItAsset asset)
         {
             try
@@ -64,7 +62,7 @@ namespace QuickStock.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin,Library Admin,Home Economics Admin,Manager")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> Update(int id, ItAsset asset)
         {
             if (id != asset.Id) return BadRequest();
@@ -81,7 +79,7 @@ namespace QuickStock.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin,Library Admin,Home Economics Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var success = await _mediator.Send(new DeleteItAssetCommand(id, User));

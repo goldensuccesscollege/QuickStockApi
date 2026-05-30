@@ -1,4 +1,4 @@
-using MediatR;
+using QuickStock.CQRS;
 using Microsoft.EntityFrameworkCore;
 using QuickStock.Applications.Library.Command;
 using QuickStock.Applications.Library.Queries;
@@ -14,7 +14,7 @@ namespace QuickStock.Applications.Library.Handler
         IRequestHandler<CreateLibraryBookCommand, Librarydata>,
         IRequestHandler<UpdateLibraryBookCommand, bool>,
         IRequestHandler<GetLibraryBooksQuery, IEnumerable<Librarydata>>,
-        IRequestHandler<GetLibraryBookByIdQuery, Librarydata>
+        IRequestHandler<GetLibraryBookByIdQuery, Librarydata?>
     {
         private readonly AppDbContext _context;
         private readonly QuickStock.Infrastructure.Services.INotificationService _notificationService;
@@ -117,7 +117,7 @@ namespace QuickStock.Applications.Library.Handler
             return await query.OrderByDescending(b => b.CreatedAt).ToListAsync(cancellationToken);
         }
 
-        public async Task<Librarydata> Handle(GetLibraryBookByIdQuery request, CancellationToken cancellationToken)
+        public async Task<Librarydata?> Handle(GetLibraryBookByIdQuery request, CancellationToken cancellationToken)
         {
             return await _context.LibraryBooks
                 .Include(b => b.Items)

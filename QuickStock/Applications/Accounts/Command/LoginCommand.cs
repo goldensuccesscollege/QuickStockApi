@@ -1,4 +1,4 @@
-using MediatR;
+using QuickStock.CQRS;
 using QuickStock.Applications.Accounts.Dto_s;
 
 namespace QuickStock.Applications.Accounts.Command

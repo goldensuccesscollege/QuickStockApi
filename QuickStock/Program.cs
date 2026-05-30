@@ -1,76 +1,70 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using QuickStock.Middlewares;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using QuickStock.Applications.Accounts.Handler;
-using QuickStock.Infrastructure.Config;
+using QuickStock.CQRS;
+using QuickStock.Infrastructure; // Accesses your new static extension method
 using QuickStock.Infrastructure.Data;
-using QuickStock.Infrastructure.Services;
+using QuickStock.Middlewares;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-// Controllers
+// ======================================================
+// Controllers & SignalR
+// ======================================================
 
 builder.Services.AddControllers();
 builder.Services.AddSignalR();
 
+// ======================================================
+// Infrastructure Services Registration (The Clean Way)
+// ======================================================
 
-// Database
+// This single line handles your ConnectionString verification, MySQL registration,
+// EmailSettings binding, and Scoped application services (Auth, Image, Notification)!
+builder.Services.AddInfrastructure(builder.Configuration);
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
-);
-
-
-// Email service
-
-builder.Services.Configure<EmailSettings>(
-builder.Configuration.GetSection("EmailSettings")
-);
-builder.Services.AddScoped<EmailService>();
-
-
-// Auth service
-
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IImageService, ImageService>();
-builder.Services.AddScoped<INotificationService, NotificationService>();
-
-
-// Profile Service
+// ======================================================
+// Profile Application Services
+// ======================================================
 
 builder.Services.AddScoped<QuickStock.Applications.Profile.Handler.UpdateProfileHandler>();
 builder.Services.AddScoped<QuickStock.Applications.Profile.Handler.GetProfileHandler>();
 
-// CORS
+// ======================================================
+// CORS Configuration
+// ======================================================
 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
         policy
-        .WithOrigins("https://localhost:7058")
-        .AllowAnyHeader()
-        .AllowAnyMethod()
-        .AllowCredentials(); // Required for SignalR
+            .WithOrigins("https://localhost:7058")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials(); // Crucial for SignalR WebSockets
     });
 });
 
+// ======================================================
+// CQRS & Http Accessor
+// ======================================================
 
-// MediatR
-
-builder.Services.AddMediatR(cfg =>
-{
-    cfg.RegisterServicesFromAssemblyContaining<LoginCommandHandler>();
-});
-
+builder.Services.AddCQRS(typeof(LoginCommandHandler).Assembly);
 builder.Services.AddHttpContextAccessor();
 
+// ======================================================
+// JWT Authentication Pipeline
+// ======================================================
 
-// JWT Authentication
+var jwtKey = builder.Configuration["Jwt:Key"]
+    ?? throw new InvalidOperationException("JWT Key 'Jwt:Key' is missing from configuration.");
+var jwtIssuer = builder.Configuration["Jwt:Issuer"]
+    ?? throw new InvalidOperationException("JWT Issuer 'Jwt:Issuer' is missing from configuration.");
+var jwtAudience = builder.Configuration["Jwt:Audience"]
+    ?? throw new InvalidOperationException("JWT Audience 'Jwt:Audience' is missing from configuration.");
 
 builder.Services.AddAuthentication(options =>
 {
@@ -85,23 +79,46 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
+
+        ValidIssuer = jwtIssuer,
+        ValidAudience = jwtAudience,
+
         IssuerSigningKey = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)
-        )
+            Encoding.UTF8.GetBytes(jwtKey)
+        ),
+
+        ClockSkew = TimeSpan.Zero
     };
 
     options.Events = new JwtBearerEvents
     {
+        // Extracts token from query string for incoming SignalR WebSocket connections
+        OnMessageReceived = context =>
+        {
+            var accessToken = context.Request.Query["access_token"];
+            var path = context.HttpContext.Request.Path;
+
+            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/notificationHub"))
+            {
+                context.Token = accessToken;
+            }
+            return Task.CompletedTask;
+        },
+
         OnTokenValidated = async context =>
         {
-            var dbContext = context.HttpContext.RequestServices.GetRequiredService<AppDbContext>();
+            var dbContext = context.HttpContext.RequestServices
+                .GetRequiredService<AppDbContext>();
+
             var userIdClaim = context.Principal?.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+
             if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId))
             {
-                var account = await dbContext.Accounts.AsNoTracking().FirstOrDefaultAsync(a => a.Id == userId);
-                if (account == null || account.Status != "Active")
+                var account = await dbContext.Accounts
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(a => a.Id == userId);
+
+                if (account == null || (account.Status != null && !account.Status.Equals("Active", StringComparison.OrdinalIgnoreCase)))
                 {
                     context.Fail("Account is disabled or no longer exists.");
                 }
@@ -110,47 +127,52 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-
-// Swagger
+// ======================================================
+// Swagger UI Configuration
+// ======================================================
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "QuickStock API",
+        Version = "v1",
+        Description = "Premium API for QuickStock Inventory Management System"
+    });
 
+    var securityScheme = new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        Name = "JWT Authentication",
+        Description = "Enter JWT Bearer token **_only_**",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        Reference = new Microsoft.OpenApi.Models.OpenApiReference
+        {
+            Id = JwtBearerDefaults.AuthenticationScheme,
+            Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme
+        }
+    };
 
-// Build App
+    options.AddSecurityDefinition(securityScheme.Reference.Id, securityScheme);
+    options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    {
+        { securityScheme, Array.Empty<string>() }
+    });
+});
 
+// ======================================================
+// Build App Engine
+// ======================================================
 
 var app = builder.Build();
 
+// ======================================================
+// Automatic Database Migration Startup
+// ======================================================
 
-// Middleware Pipeline
-
-app.ConfigureCustomExceptionMiddleware();
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-   app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-
-// Serve files from wwwroot (for profile images)
-app.UseStaticFiles();
-
-app.UseRouting();
-
-app.UseCors("AllowFrontend");
-
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.MapControllers();
-app.MapHub<QuickStock.Controllers.ChatHub>("/chatHub");
-app.MapHub<QuickStock.Controllers.NotificationHub>("/notificationHub");
-
-
-// Database Initialization
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -168,5 +190,40 @@ using (var scope = app.Services.CreateScope())
         logger.LogError(ex, "An error occurred while migrating the database.");
     }
 }
+
+// ======================================================
+// Middleware Pipeline Execution
+// ======================================================
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "QuickStock API v1");
+    });
+}
+
+app.ConfigureCustomExceptionMiddleware();
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
+
+// CORS evaluated after routing, before Auth
+app.UseCors("AllowFrontend");
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+// ======================================================
+// API Endpoint Routing Maps
+// ======================================================
+
+app.MapControllers();
+app.MapHub<QuickStock.Controllers.NotificationHub>("/notificationHub");
+
+// ======================================================
+// Run Application
+// ======================================================
 
 app.Run();

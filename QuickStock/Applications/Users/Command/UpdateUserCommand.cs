@@ -1,4 +1,4 @@
-using MediatR;
+using QuickStock.CQRS;
 using QuickStock.Applications.Users.Dtos;
 
 namespace QuickStock.Applications.Users.Command

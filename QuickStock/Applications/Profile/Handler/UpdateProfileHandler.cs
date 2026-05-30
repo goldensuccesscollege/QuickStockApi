@@ -1,6 +1,7 @@
 using QuickStock.Applications.Profile.DTO_s;
 using QuickStock.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using QuickStock.Domain.Social;
 
 namespace QuickStock.Applications.Profile.Handler
 {

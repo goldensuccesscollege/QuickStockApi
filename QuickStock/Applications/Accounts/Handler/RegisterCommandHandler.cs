@@ -1,17 +1,11 @@
-using MediatR;
+using QuickStock.CQRS;
 using Microsoft.EntityFrameworkCore;
 using QuickStock.Applications.Accounts.Command;
 using QuickStock.Applications.Accounts.Dto_s;
 using QuickStock.Domain.ITassets;
-using QuickStock.Domain.Messaging;
-using QuickStock.Domain.Social;
 using QuickStock.Domain.Locations;
 using QuickStock.Domain.Shared;
 using QuickStock.Domain.Accounts;
-using QuickStock.Domain.Messaging;
-using QuickStock.Domain.Social;
-using QuickStock.Domain.Locations;
-using QuickStock.Domain.Shared;
 using QuickStock.Infrastructure.Data;
 using QuickStock.Infrastructure.Security;
 using QuickStock.Infrastructure.Services;
@@ -59,7 +53,7 @@ namespace QuickStock.Applications.Accounts.Handler
                 PasswordHash = PasswordHelper.HashPassword(request.Password),
                 VerificationTokens = token,
                 Created = DateTime.UtcNow,
-                Role = request.Role ?? "User",
+                Role = request.Role ?? "Staff",
                 Status = "Pending",
                 Profile = new QuickStock.Domain.Social.Profile
                 {

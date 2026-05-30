@@ -1,4 +1,4 @@
-using MediatR;
+using QuickStock.CQRS;
 using QuickStock.Domain.Library;
 using System.Security.Claims;
 

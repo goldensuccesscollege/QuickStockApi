@@ -1,4 +1,4 @@
-using MediatR;
+using QuickStock.CQRS;
 using System.Security.Claims;
 
 namespace QuickStock.Applications.AuditLogs.Queries

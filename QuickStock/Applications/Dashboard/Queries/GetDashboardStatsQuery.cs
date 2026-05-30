@@ -1,4 +1,4 @@
-using MediatR;
+using QuickStock.CQRS;
 
 namespace QuickStock.Applications.Dashboard.Queries
 {

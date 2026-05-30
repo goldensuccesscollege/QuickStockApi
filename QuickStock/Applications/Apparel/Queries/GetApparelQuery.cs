@@ -1,4 +1,4 @@
-using MediatR;
+using QuickStock.CQRS;
 using QuickStock.Domain.Apparel;
 
 namespace QuickStock.Applications.Apparel.Queries

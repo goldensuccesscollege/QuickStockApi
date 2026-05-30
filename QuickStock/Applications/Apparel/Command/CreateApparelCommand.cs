@@ -1,4 +1,4 @@
-using MediatR;
+using QuickStock.CQRS;
 using QuickStock.Domain.Apparel;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;

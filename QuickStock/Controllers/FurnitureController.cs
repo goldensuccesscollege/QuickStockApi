@@ -1,4 +1,4 @@
-using MediatR;
+using QuickStock.CQRS;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuickStock.Applications.Furniture.Command;
@@ -27,7 +27,7 @@ namespace QuickStock.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin,Library Admin,Home Economics Admin,Manager,User")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         public async Task<IActionResult> Create(Domain.Furniture.Furniture furniture)
         {
             try
@@ -49,7 +49,7 @@ namespace QuickStock.Controllers
             return Ok(furniture);
         }
         [HttpPut]
-        [Authorize(Roles = "Admin,Home Economics Admin,Manager")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> Update(Domain.Furniture.Furniture furniture)
         {
             try

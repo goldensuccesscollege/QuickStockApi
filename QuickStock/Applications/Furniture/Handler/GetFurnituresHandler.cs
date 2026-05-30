@@ -1,4 +1,4 @@
-using MediatR;
+using QuickStock.CQRS;
 using Microsoft.EntityFrameworkCore;
 using QuickStock.Applications.Furniture.Queries;
 using QuickStock.Infrastructure.Data;
@@ -37,8 +37,8 @@ namespace QuickStock.Applications.Furniture.Handler
             {
                 var search = request.SearchTerm.ToLower();
                 query = query.Where(f => f.Item_Name.ToLower().Contains(search) || 
-                                         f.Item_number.ToLower().Contains(search) || 
-                                         f.Brand.ToLower().Contains(search) || 
+                                         (f.Item_number != null && f.Item_number.ToLower().Contains(search)) || 
+                                         (f.Brand != null && f.Brand.ToLower().Contains(search)) || 
                                          f.Item_ID.ToString().Contains(search));
 
             }

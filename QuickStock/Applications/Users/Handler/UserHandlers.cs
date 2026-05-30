@@ -1,10 +1,8 @@
-using MediatR;
+using QuickStock.CQRS;
 using Microsoft.EntityFrameworkCore;
 using QuickStock.Applications.Users.Command;
 using QuickStock.Infrastructure.Data;
 using QuickStock.Domain.ITassets;
-using QuickStock.Domain.Messaging;
-using QuickStock.Domain.Social;
 using QuickStock.Domain.Locations;
 using QuickStock.Domain.Shared;
 using QuickStock.Domain.Accounts;
@@ -46,9 +44,9 @@ namespace QuickStock.Applications.Users.Handler
                 Verified = DateTime.UtcNow,
                 CanAccessITAssets = dto.CanAccessITAssets,
                 CanAccessApparel = dto.CanAccessApparel,
-                CanAccessMessages = dto.CanAccessMessages,
+                
                 CanAccessLibrary = dto.CanAccessLibrary,
-                CanAccessHomeEconomics = dto.CanAccessHomeEconomics,
+                CanAccessFurniture = dto.CanAccessFurniture,
                 CanAccessConsumables = dto.CanAccessConsumables,
                 Profile = new QuickStock.Domain.Social.Profile
                 {
@@ -93,9 +91,9 @@ namespace QuickStock.Applications.Users.Handler
             account.Username = dto.Username;
             account.CanAccessITAssets = dto.CanAccessITAssets;
             account.CanAccessApparel = dto.CanAccessApparel;
-            account.CanAccessMessages = dto.CanAccessMessages;
+            account.CanAccessFurniture = dto.CanAccessFurniture;
             account.CanAccessLibrary = dto.CanAccessLibrary;
-            account.CanAccessHomeEconomics = dto.CanAccessHomeEconomics;
+            
             account.CanAccessConsumables = dto.CanAccessConsumables;
 
             if (account.Profile != null)
@@ -276,25 +274,7 @@ namespace QuickStock.Applications.Users.Handler
         }
     }
 
-    public class ToggleMessageAccessHandler : IRequestHandler<ToggleMessageAccessCommand, object>
-    {
-        private readonly AppDbContext _context;
-
-        public ToggleMessageAccessHandler(AppDbContext context)
-        {
-            _context = context;
-        }
-
-        public async Task<object> Handle(ToggleMessageAccessCommand request, CancellationToken cancellationToken)
-        {
-            var account = await _context.Accounts.FindAsync(new object[] { request.Id }, cancellationToken);
-            if (account == null) throw new KeyNotFoundException("User not found.");
-
-            account.CanAccessMessages = !account.CanAccessMessages;
-            await _context.SaveChangesAsync(cancellationToken);
-            return new { canAccessMessages = account.CanAccessMessages };
-        }
-    }
+  
 
     public class ToggleLibraryAccessHandler : IRequestHandler<ToggleLibraryAccessCommand, object>
     {
@@ -330,9 +310,9 @@ namespace QuickStock.Applications.Users.Handler
             var account = await _context.Accounts.FindAsync(new object[] { request.Id }, cancellationToken);
             if (account == null) throw new KeyNotFoundException("User not found.");
 
-            account.CanAccessHomeEconomics = !account.CanAccessHomeEconomics;
+            account.CanAccessFurniture = !account.CanAccessFurniture;
             await _context.SaveChangesAsync(cancellationToken);
-            return new { canAccessHomeEconomics = account.CanAccessHomeEconomics };
+            return new { canAccessFurniture = account.CanAccessFurniture };
         }
     }
 }
