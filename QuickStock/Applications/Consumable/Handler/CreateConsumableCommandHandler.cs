@@ -31,10 +31,10 @@ namespace QuickStock.Applications.Consumables.Handlers
                 throw new BadRequestException("Product name cannot be empty.");
             }
 
-            // Blocks 0 and negative values, then throws your custom message
-            if (!request.Count.HasValue || request.Count.Value <= 0)
+            // Allow Count = 0 (registering a product with no initial stock is valid)
+            if (!request.Count.HasValue || request.Count.Value < 0)
             {
-                throw new BadRequestException("Please input quantity.");
+                throw new BadRequestException("Quantity cannot be negative.");
             }
 
             // 2. Validate Foreign Key Existence 

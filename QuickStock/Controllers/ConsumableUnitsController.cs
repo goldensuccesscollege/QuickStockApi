@@ -38,6 +38,20 @@ namespace QuickStock.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Retrieves the chronological inventory ledger showing IN/OUT/Balance per product.
+        /// URL: GET /api/ConsumableUnits/ledger?campusId=1&productId=5
+        /// </summary>
+        [HttpGet("ledger")]
+        [ProducesResponseType(typeof(List<ConsumableLedgerEntryDto>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetLedger([FromQuery] int? campusId, [FromQuery] int? productId)
+        {
+            var query = new GetConsumableLedgerQuery { CampusId = campusId, ProductId = productId };
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -49,6 +63,19 @@ namespace QuickStock.Controllers
             
             // Returns HTTP 201 Created containing the primary database ID location tag
             return CreatedAtAction(nameof(Create), new { id = consumableId }, new { Id = consumableId });
+        }
+
+        [HttpPut("{id}")]
+        [Authorize(Roles = "Admin,Manager")]
+        [ProducesResponseType(typeof(ConsumableCreateResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateConsumableCommand command)
+        {
+            command.Id = id;
+            var result = await _mediator.Send(command);
+            return Ok(result);
         }
 
         [HttpPost("add-stock")]
