@@ -5,7 +5,7 @@ namespace QuickStock.Applications.Users.Dtos
         public string Username { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
-        public string Role { get; set; } = "Staff";
+        public string Role { get; set; } = "Employee";
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public bool CanAccessITAssets { get; set; } = true;
@@ -19,7 +19,7 @@ namespace QuickStock.Applications.Users.Dtos
     {
         public string Username { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-        public string Role { get; set; } = "Staff";
+        public string Role { get; set; } = "Employee";
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public bool CanAccessITAssets { get; set; }

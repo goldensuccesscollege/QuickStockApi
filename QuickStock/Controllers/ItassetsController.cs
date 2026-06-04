@@ -47,7 +47,7 @@ namespace QuickStock.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin,Manager,Staff")]
+        [Authorize(Roles = "Admin,Manager,Employee")]
         public async Task<IActionResult> Create(ItAsset asset)
         {
             try

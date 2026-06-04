@@ -11,7 +11,7 @@ namespace QuickStock.Applications.Accounts.Command
        string Title,
        string FirstName,
        string LastName,
-       string Role = "Staff",
-       bool IsFromApi = false // ðŸ‘ˆ just a constructor parameter
+       string Role = "Employee",
+       bool IsFromApi = false // 👈 just a constructor parameter
    ) : IRequest<RegisterResponse>;
 }

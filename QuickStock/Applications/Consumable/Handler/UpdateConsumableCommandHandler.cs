@@ -47,19 +47,20 @@ namespace QuickStock.Applications.Consumables.Handlers
             await _db.SaveChangesAsync(cancellationToken);
 
             // 4. Write audit log
-            var currentUserId   = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var currentUsername = _httpContextAccessor.HttpContext?.User?.Identity?.Name;
+            // 🔒 FIX: Added ?? fallbacks here to completely eliminate warning CS8601
+            var currentUserId   = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "Unknown ID";
+            var currentUsername = _httpContextAccessor.HttpContext?.User?.Identity?.Name ?? "System/Anonymous";
 
             var auditLog = new AuditLog
             {
                 Action     = "Update",
                 EntityType = "Consumable",
                 EntityId   = consumable.Id,
-                EntityName = consumable.ProductName,
-                Details    = $"Type: {consumable.ProductType} | Count: {consumable.Count}",
+                EntityName = consumable.ProductName ?? "Unknown Product", // Added absolute safety fallback
+                Details    = $"Type: {consumable.ProductType ?? "Unknown"} | Count: {consumable.Count}",
                 Timestamp  = DateTime.UtcNow,
                 UserId     = currentUserId,
-                Username   = currentUsername ?? string.Empty,
+                Username   = currentUsername,
                 CampusId   = consumable.CampusId,
                 Status     = "Update Unit"
             };

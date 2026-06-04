@@ -37,20 +37,23 @@ namespace QuickStock.Applications.Consumables.Handlers
                 throw new BadRequestException($"Request is already in '{req.Status}' state.");
             }
 
-            var reviewerId = request.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var reviewerName = request.User.Identity?.Name;
+            var reviewerId = request.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "Unknown Reviewer ID";
+            var reviewerName = request.User.Identity?.Name ?? "System/Reviewer";
 
             int finalEntityId = 0;
             string auditAction = string.Empty;
             string auditStatus = string.Empty;
             string auditDetails = string.Empty;
 
-            if (req.RequestType == "Create")
+            // Normalize match expressions to prevent string casing mismatches
+            var requestTypeNormalized = req.RequestType?.Trim();
+
+            if (string.Equals(requestTypeNormalized, "Create", StringComparison.OrdinalIgnoreCase))
             {
                 var consumable = new ConsumableUnit
                 {
                     ProductName = req.ProductName,
-                    ProductType = req.ProductType,
+                    ProductType = req.ProductType ?? string.Empty,
                     Count = req.Count,
                     DateArrive = DateTime.UtcNow,
                     CampusId = req.CampusId
@@ -61,11 +64,13 @@ namespace QuickStock.Applications.Consumables.Handlers
 
                 req.TargetItemId = consumable.Id;
                 finalEntityId = consumable.Id;
-                auditAction = "Create";
+                
+                // 🔒 FIX: Matches your ledger reader's "Create" pattern perfectly
+                auditAction = "Create"; 
                 auditStatus = "Create Unit";
-                auditDetails = $"Type: {consumable.ProductType} | Count: {consumable.Count}";
+                auditDetails = $"Type: {consumable.ProductType ?? "Unknown"} | Count: {consumable.Count}";
             }
-            else if (req.RequestType == "Add")
+            else if (string.Equals(requestTypeNormalized, "Add", StringComparison.OrdinalIgnoreCase))
             {
                 var consumable = await _db.ConsumableUnits
                     .FirstOrDefaultAsync(c => c.Id == req.TargetItemId, cancellationToken);
@@ -78,11 +83,13 @@ namespace QuickStock.Applications.Consumables.Handlers
                 consumable.Count = (consumable.Count ?? 0) + req.Count;
                 consumable.DateArrive = DateTime.UtcNow;
                 finalEntityId = consumable.Id;
+                
+                // 🔒 FIX: Matches your ledger reader's "Add Stock" pattern perfectly
                 auditAction = "Add Stock";
                 auditStatus = "Add Quantity";
-                auditDetails = $"Type: {consumable.ProductType} | Count: {req.Count}";
+                auditDetails = $"Type: {consumable.ProductType ?? "Unknown"} | Count: {req.Count}";
             }
-            else if (req.RequestType == "Deduct")
+            else if (string.Equals(requestTypeNormalized, "Deduct", StringComparison.OrdinalIgnoreCase))
             {
                 var consumable = await _db.ConsumableUnits
                     .FirstOrDefaultAsync(c => c.Id == req.TargetItemId, cancellationToken);
@@ -100,9 +107,11 @@ namespace QuickStock.Applications.Consumables.Handlers
 
                 consumable.Count = currentCount - req.Count;
                 finalEntityId = consumable.Id;
+                
+                // 🔒 FIX: Matches your ledger reader's "Deduct Stock" pattern perfectly
                 auditAction = "Deduct Stock";
                 auditStatus = "Deduct Quantity";
-                auditDetails = $"Type: {consumable.ProductType} | Count: {req.Count}";
+                auditDetails = $"Type: {consumable.ProductType ?? "Unknown"} | Count: {req.Count}";
             }
             else
             {
@@ -121,11 +130,11 @@ namespace QuickStock.Applications.Consumables.Handlers
                 Action = auditAction,
                 EntityType = "Consumable",
                 EntityId = finalEntityId,
-                EntityName = req.ProductName,
+                EntityName = req.ProductName ?? "Unknown Product",
                 Details = auditDetails,
                 Timestamp = DateTime.UtcNow,
-                UserId = req.RequestorId,
-                Username = req.RequestorName, // Requestor gets credit for the action
+                UserId = req.RequestorId ?? "Unknown ID",
+                Username = req.RequestorName ?? "System/Anonymous", // Requestor receives credit, keeping accountability clean
                 CampusId = req.CampusId,
                 Status = auditStatus
             };

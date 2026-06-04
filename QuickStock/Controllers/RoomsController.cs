@@ -35,7 +35,7 @@ namespace QuickStock.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin,Manager,Staff")]
+        [Authorize(Roles = "Admin,Manager,Employee")]
         public async Task<ActionResult<Room>> CreateRoom(Room room)
         {
             try

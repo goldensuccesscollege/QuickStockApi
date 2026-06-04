@@ -53,6 +53,7 @@ namespace QuickStock.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "Admin,Manager")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -79,6 +80,7 @@ namespace QuickStock.Controllers
         }
 
         [HttpPost("add-stock")]
+        [Authorize(Roles = "Admin,Manager")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -111,16 +113,41 @@ namespace QuickStock.Controllers
             return Ok(result);
         }
 
+     
         [HttpPost("requests")]
         [ProducesResponseType(typeof(ConsumableCreateResponse), StatusCodes.Status200OK)]
-        public async Task<IActionResult> CreateRequest([FromBody] CreateConsumableRequestCommand command)
+        public async Task<IActionResult> CreateRequest([FromBody] ConsumableRequestDto dto)
         {
-            command.User = User;
+            // Securely pluck the ID string out from the web API layer context
+            var currentUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            var currentUserName = User.Identity?.Name;
+
+            // Employees are ONLY permitted to request a stock deduction (Deduct)
+            if (User.IsInRole("Employee") && !string.Equals(dto.RequestType, "Deduct", StringComparison.OrdinalIgnoreCase))
+            {
+                return Forbid();
+            }
+
+            var command = new CreateConsumableRequestCommand
+            {
+                RequestType = dto.RequestType,
+                ProductName = dto.ProductName,
+                ProductType = dto.ProductType,
+                Count = dto.Count,
+                TargetItemId = dto.TargetItemId,
+                CampusId = dto.CampusId,
+                RequestorId = currentUserId, 
+                RequestorName = currentUserName,
+                SubmitToken = dto.SubmitToken, // Tied up nicely!
+                Timestamp = dto.Timestamp
+            };
+
             var result = await _mediator.Send(command);
             return Ok(result);
         }
 
         [HttpPost("requests/{id}/approve")]
+        [Authorize(Roles = "Admin,Manager")]
         [ProducesResponseType(typeof(ConsumableCreateResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> ApproveRequest(int id)
         {
@@ -130,6 +157,7 @@ namespace QuickStock.Controllers
         }
 
         [HttpPost("requests/{id}/reject")]
+        [Authorize(Roles = "Admin,Manager")]
         [ProducesResponseType(typeof(ConsumableCreateResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> RejectRequest(int id, [FromBody] RejectConsumableRequestCommand command)
         {

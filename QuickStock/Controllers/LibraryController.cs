@@ -32,7 +32,7 @@ namespace QuickStock.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin,Manager,Staff")]
+        [Authorize(Roles = "Admin,Manager,Employee")]
         public async Task<ActionResult<Librarydata>> Create(Librarydata book)
         {
             var result = await _mediator.Send(new CreateLibraryBookCommand(book, User));
@@ -52,7 +52,7 @@ namespace QuickStock.Controllers
         // --- Item Management ---
 
         [HttpPost("{bookId}/items")]
-        [Authorize(Roles = "Admin,Manager,Staff")]
+        [Authorize(Roles = "Admin,Manager,Employee")]
         public async Task<ActionResult<LibraryBookItem>> AddItem(int bookId, LibraryBookItem item)
         {
             var result = await _mediator.Send(new AddLibraryBookItemCommand(bookId, item, User));

@@ -22,8 +22,7 @@ namespace QuickStock.Applications.Consumable.Handler
 
         public async Task<List<ConsumableLedgerEntryDto>> Handle(GetConsumableLedgerQuery request, CancellationToken cancellationToken)
         {
-            // 1. Pull all Consumable audit logs for the campus, ordered by oldest first
-            //    so we can calculate the running balance correctly
+            // 1. Pull all Consumable audit logs matching your criteria
             var query = _context.AuditLogs
                 .AsNoTracking()
                 .Where(l => l.EntityType == "Consumable");
@@ -38,59 +37,62 @@ namespace QuickStock.Applications.Consumable.Handler
                 query = query.Where(l => l.EntityId == request.ProductId.Value);
             }
 
+            // 🔒 FIX: Order strictly by Timestamp first to maintain absolute chronological reality across records
             var logs = await query
-                .OrderBy(l => l.EntityId)
-                .ThenBy(l => l.Timestamp)
+                .OrderBy(l => l.Timestamp)
                 .ToListAsync(cancellationToken);
 
-            // 2. Group by product (EntityId), compute running balance per product
             var ledgerEntries = new List<ConsumableLedgerEntryDto>();
 
-            var groupedByProduct = logs.GroupBy(l => l.EntityId);
+            // 2. Track independent product running balances via a dictionary lookup mapping
+            var productBalances = new Dictionary<int, int>();
 
-            foreach (var productGroup in groupedByProduct)
+            foreach (var log in logs)
             {
-                int runningBalance = 0;
+                int quantity = ParseCount(log.Details);
+                int inQty = 0;
+                int outQty = 0;
 
-                foreach (var log in productGroup.OrderBy(l => l.Timestamp))
+                // Initialize balance map item entry if this is a newly discovered ID
+                if (!productBalances.ContainsKey(log.EntityId))
                 {
-                    // Parse the quantity from the Details field: "Type: pieces | Count: 10"
-                    int quantity = ParseCount(log.Details);
-
-                    int inQty = 0;
-                    int outQty = 0;
-
-                    if (log.Action == "Create" || log.Action == "Add Stock")
-                    {
-                        inQty = quantity;
-                        runningBalance += quantity;
-                    }
-                    else if (log.Action == "Deduct Stock")
-                    {
-                        outQty = quantity;
-                        runningBalance -= quantity;
-                        if (runningBalance < 0) runningBalance = 0; // Safety guard
-                    }
-                    else
-                    {
-                        // Skip unrecognised action types (e.g. Approve/Reject)
-                        continue;
-                    }
-
-                    ledgerEntries.Add(new ConsumableLedgerEntryDto
-                    {
-                        Date = log.Timestamp,
-                        ProductId = log.EntityId,
-                        ProductName = log.EntityName ?? string.Empty,
-                        In = inQty,
-                        Out = outQty,
-                        Balance = runningBalance,
-                        ProcessedByName = log.Username ?? "System"
-                    });
+                    productBalances[log.EntityId] = 0;
                 }
+
+                if (log.Action == "Create" || log.Action == "Add Stock")
+                {
+                    inQty = quantity;
+                    productBalances[log.EntityId] += quantity;
+                }
+                else if (log.Action == "Deduct Stock")
+                {
+                    outQty = quantity;
+                    productBalances[log.EntityId] -= quantity;
+                    
+                    if (productBalances[log.EntityId] < 0) 
+                    {
+                        productBalances[log.EntityId] = 0; // Safety guard
+                    }
+                }
+                else
+                {
+                    // Skip unrecognized structural logs safely
+                    continue;
+                }
+
+                ledgerEntries.Add(new ConsumableLedgerEntryDto
+                {
+                    Date = log.Timestamp,
+                    ProductId = log.EntityId,
+                    ProductName = log.EntityName ?? string.Empty,
+                    In = inQty,
+                    Out = outQty,
+                    Balance = productBalances[log.EntityId], // Tracks correct historical item context snapshot
+                    ProcessedByName = log.Username ?? "System"
+                });
             }
 
-            // 3. Return all ledger entries sorted by most recent first
+            // 3. Return all historical updates showing the newest transactions first
             return ledgerEntries
                 .OrderByDescending(e => e.Date)
                 .ToList();
@@ -98,7 +100,7 @@ namespace QuickStock.Applications.Consumable.Handler
 
         /// <summary>
         /// Parses the Count value from the AuditLog Details string.
-        /// Format example: "Type: pieces | Count: 10"
+        /// Robust parsing structure handles accidental whitespace variations cleanly.
         /// </summary>
         private static int ParseCount(string? details)
         {
@@ -111,7 +113,11 @@ namespace QuickStock.Applications.Consumable.Handler
                 if (trimmed.StartsWith("Count:", StringComparison.OrdinalIgnoreCase))
                 {
                     var valueStr = trimmed.Substring("Count:".Length).Trim();
-                    if (int.TryParse(valueStr, out int count))
+                    
+                    // 🔒 FIX: Extracts purely numeric digits up until whitespace or metadata blocks to protect parsing operations
+                    var numericPart = new string(valueStr.TakeWhile(c => char.IsDigit(c) || c == '-').ToArray());
+
+                    if (int.TryParse(numericPart, out int count))
                         return count;
                 }
             }

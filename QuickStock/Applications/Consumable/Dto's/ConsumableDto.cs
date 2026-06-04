@@ -4,6 +4,8 @@ namespace QuickStock.Applications.Consumables.Dto_s
     {
         public int Id { get; set; }
         public string Message { get; set; } = "Added successfully";
+
+        public string NextSubmitToken { get; set; } = string.Empty;
     }
 
     public class ConsumableResponse
@@ -27,12 +29,13 @@ namespace QuickStock.Applications.Consumables.Dto_s
         public int? TargetItemId { get; set; }
         public string Status { get; set; } = "Pending";
         public string? RejectionReason { get; set; }
-        public DateTime Timestamp { get; set; }
+        public DateTime? Timestamp { get; set; }
         public string? RequestorId { get; set; }
         public string? RequestorName { get; set; }
         public string? ReviewerId { get; set; }
         public string? ReviewerName { get; set; }
         public int CampusId { get; set; }
+        public string SubmitToken { get; set; } = string.Empty;
     }
 
     public class ConsumableLedgerEntryDto
@@ -40,9 +43,9 @@ namespace QuickStock.Applications.Consumables.Dto_s
         public DateTime Date { get; set; }
         public int ProductId { get; set; }
         public string ProductName { get; set; } = string.Empty;
-        public int In { get; set; }      // Units added (Create or Add Stock)
-        public int Out { get; set; }     // Units deducted
-        public int Balance { get; set; } // Running balance at this point in time
+        public int In { get; set; }     
+        public int Out { get; set; }     
+        public int Balance { get; set; } 
         public string ProcessedByName { get; set; } = string.Empty;
     }
 }

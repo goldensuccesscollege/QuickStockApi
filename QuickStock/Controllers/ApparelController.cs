@@ -64,7 +64,7 @@ namespace QuickStock.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin,Manager,Staff")]
+        [Authorize(Roles = "Admin,Manager,Employee")]
         public async Task<IActionResult> Create(Appareldata apparel)
         {
             try
@@ -79,7 +79,7 @@ namespace QuickStock.Controllers
         }
 
         [HttpPost("{id}/add-stock")]
-        [Authorize(Roles = "Admin,Manager,Staff")]
+        [Authorize(Roles = "Admin,Manager,Employee")]
         public async Task<IActionResult> AddStock(int id, [FromBody] int additionalQuantity)
         {
             if (additionalQuantity <= 0) return BadRequest("Quantity must be greater than zero.");

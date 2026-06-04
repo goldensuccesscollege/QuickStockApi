@@ -1,5 +1,6 @@
 using QuickStock.CQRS;
 using QuickStock.Applications.Consumables.Dto_s; // Ensure you import your response namespace
+using System;
 
 namespace QuickStock.Applications.Consumables.Commands
 {
@@ -11,5 +12,7 @@ namespace QuickStock.Applications.Consumables.Commands
         public int? Count { get; set; }
         public DateTime? DateArrive { get; set; }
         public int CampusId { get; set; }
+
+        
     }
 }

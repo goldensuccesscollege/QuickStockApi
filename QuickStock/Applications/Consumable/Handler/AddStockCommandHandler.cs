@@ -5,8 +5,12 @@ using QuickStock.Common.Exceptions;
 using QuickStock.Applications.Consumables.Commands;
 using QuickStock.Applications.Consumables.Dto_s;
 using QuickStock.Domain.Shared;
+using QuickStock.Domain.Consumable;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
+using System.Threading;
+using System.Threading.Tasks;
+using System;
 
 namespace QuickStock.Applications.Consumables.Handlers
 {
@@ -23,13 +27,11 @@ namespace QuickStock.Applications.Consumables.Handlers
 
         public async Task<ConsumableCreateResponse> Handle(AddStockCommand request, CancellationToken cancellationToken)
         {
-            // 1. Guard Rail: Do not accept 0 or negative top-up adjustments
             if (request.Quantity <= 0)
             {
                 throw new BadRequestException("Please input quantity.");
             }
 
-            // 2. Locate the existing item in the database
             var consumable = await _db.ConsumableUnits
                 .FirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
 
@@ -38,40 +40,31 @@ namespace QuickStock.Applications.Consumables.Handlers
                 throw new NotFoundException($"Consumable item with ID {request.Id} was not found.");
             }
 
-            // 3. Increment the math value safely
-            // (Using ?? 0 just in case the existing DB field value was somehow NULL)
-            consumable.Count = (consumable.Count ?? 0) + request.Quantity;
-            consumable.DateArrive = DateTime.UtcNow; // Update arrival date to reflect latest delivery
+            var currentUserId = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "Unknown ID";
+            var currentUsername = _httpContextAccessor.HttpContext?.User?.Identity?.Name ?? "System/Anonymous";
 
-            // 4. Save updates to MySQL
-            await _db.SaveChangesAsync(cancellationToken);
-
-            // 5. Create Audit Log
-            var currentUserId = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var currentUsername = _httpContextAccessor.HttpContext?.User?.Identity?.Name;
-
-            var auditLog = new AuditLog
+            // 📝 Route directly through the Requests table with a Pending status
+            var consumableRequest = new ConsumableRequest
             {
-                Action = "Add Stock",
-                EntityType = "Consumable",
-                EntityId = consumable.Id,
-                EntityName = consumable.ProductName,
-                Details = $"Type: {consumable.ProductType} | Count: {request.Quantity}",
+                RequestType = "Add",
+                ProductName = consumable.ProductName ?? "Unknown Product",
+                ProductType = consumable.ProductType ?? "Unknown",
+                Count = request.Quantity,
+                TargetItemId = consumable.Id,
+                Status = "Pending",
                 Timestamp = DateTime.UtcNow,
-                UserId = currentUserId,
-                Username = currentUsername,
-                CampusId = consumable.CampusId,
-                Status = "Add Quantity"
+                RequestorId = currentUserId,
+                RequestorName = currentUsername,
+                CampusId = consumable.CampusId
             };
 
-            await _db.AuditLogs.AddAsync(auditLog, cancellationToken);
+            await _db.ConsumableRequests.AddAsync(consumableRequest, cancellationToken);
             await _db.SaveChangesAsync(cancellationToken);
 
-            // 6. Return clean structured feedback loop payload
             return new ConsumableCreateResponse
             {
-                Id = consumable.Id,
-                Message = "Added successfully"
+                Id = consumableRequest.Id,
+                Message = "Stock addition request submitted. Waiting for administrative review/approval."
             };
         }
     }

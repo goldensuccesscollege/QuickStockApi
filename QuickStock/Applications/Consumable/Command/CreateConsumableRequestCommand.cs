@@ -1,6 +1,6 @@
 using QuickStock.CQRS;
 using QuickStock.Applications.Consumables.Dto_s;
-using System.Security.Claims;
+using System;
 
 namespace QuickStock.Applications.Consumables.Commands
 {
@@ -13,8 +13,9 @@ namespace QuickStock.Applications.Consumables.Commands
         public int? TargetItemId { get; set; }
         public int CampusId { get; set; }
 
-        [System.Text.Json.Serialization.JsonIgnore]
-        [Microsoft.AspNetCore.Mvc.ModelBinding.BindNever]
-        public ClaimsPrincipal? User { get; set; }
+        public string? RequestorId { get; set; } 
+        public string? RequestorName { get; set; }
+        public string SubmitToken { get; set; } = string.Empty;
+        public DateTime? Timestamp { get; set; }
     }
 }
